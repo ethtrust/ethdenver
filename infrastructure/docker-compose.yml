@@ -1,0 +1,51 @@
+version: "3"
+services:
+  ethnode:
+    image: openethereum/openethereum:v3.3.2
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+      - "30303:30303"
+      - "30303:30303/udp"
+    volumes:
+      - ./data/ethereum/data:/home/openethereum/.local/share/openethereum/data
+      - ./data/ethereum/log:/home/openethereum/.local/share/openethereum/log
+      - ./config:/home/openethereum/.local/share/openethereum/config
+    entrypoint:
+      - /home/openethereum/openethereum
+      - --config
+      - /home/openethereum/.local/share/openethereum/config/config.toml
+  graph-node:
+    image: graphprotocol/graph-node
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+      - "8020:8020"
+    depends_on:
+      - ethnode
+      - ipfs
+      - postgres
+    environment:
+      postgres_host: postgres
+      postgres_user: graph-node
+      postgres_pass: let-me-in
+      postgres_db: graph-node
+      ipfs: "ipfs:5001"
+      ethereum: "rinkeby:http://ethnode:8545"
+      RUST_LOG: info
+  ipfs:
+    image: ipfs/go-ipfs
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./data/ipfs:/data/ipfs
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: graph-node
+      POSTGRES_PASSWORD: let-me-in
+      POSTGRES_DB: graph-node
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data

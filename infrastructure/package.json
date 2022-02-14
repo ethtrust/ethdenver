@@ -1,0 +1,30 @@
+{
+  "name": "oneoff",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "author": "Ari Lerner <me@ari.io>",
+  "license": "ISC",
+  "scripts": {
+    "build": "tsc -p .",
+    "generate": "jk generate -v -i . -o generated dist/index.js"
+  },
+  "dependencies": {
+    "@dpu/jkcfg-k8s": "^0.5.4",
+    "@jkcfg/grafana": "^0.1.0",
+    "@jkcfg/kubernetes": "^0.6.2",
+    "@jkcfg/std": "^0.4.0",
+    "fs-extra": "^10.0.0",
+    "lodash-es": "^4.17.21"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.17",
+    "eslint": "^8.8.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.5"
+  }
+}

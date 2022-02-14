@@ -1,0 +1,32 @@
+compile +ARGS='': clean-dist
+  yarn tsc -p . {{ARGS}}
+
+clean-dist:
+  rm -rf dist/
+
+gen:
+  #!/bin/bash
+  set -ex
+  rm -rf generated
+  jk generate -v -i . -o generated dist/index.js
+
+build: compile gen
+
+to-stdout dir: compile gen
+  #!/bin/bash
+  jk generate -v -i . --stdout dist/index.js
+
+kube-apply dir: compile gen
+  #!/bin/bash
+  namespaces=$(find ./generated -type f -name "*-namespace.yaml")
+  for file in $namespaces; do
+    k3s kubectl apply -f $file
+  done
+  files=$(find ./generated -mindepth 2 -type f -name "*.yaml")
+  for file in $files; do
+    k3s kubectl apply -f $file 2>/dev/null
+  done
+
+kube-delete dir:
+  #!/bin/bash
+  just -q to-stdout . | tail -n +3 | k3s kubectl delete -f -

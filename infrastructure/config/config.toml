@@ -1,0 +1,60 @@
+[parity]
+mode = "passive"
+mode_timeout = 500
+mode_alarm = 3600
+chain = "/home/openethereum/local/share/openethereum/config/arbitrum.json"
+db_path = "/home/openethereum/.local/share/openethereum/data"
+no_persistent_txqueue = false
+
+[network]
+id = 421611
+discovery = true
+max_peers = 20
+max_pending_peers = 64
+min_peers = 10
+port = 30303
+snapshot_peers = 25
+warp = false
+
+[metrics]
+enable = false
+
+[rpc]
+interface = "0.0.0.0"
+hosts = ["all"]
+port = 8545
+cors = ["*"]
+apis = ["all"]
+disable = false
+
+[websockets]
+apis = ["all"]
+disable = false
+hosts = ["all"]
+interface = "0.0.0.0"
+max_connections = 1000
+origins = ["*"]
+port = 8546
+
+[ipc]
+disable = false
+
+[footprint]
+scale_verifiers = true
+num_verifiers = 1
+db_compaction = "ssd"
+cache_size = 10240
+fast_and_loose = false
+pruning = "fast"
+pruning_history = 1000
+pruning_memory = 32
+tracing = "on"
+fat_db = "on"
+
+[snapshots]
+enable = true
+
+[misc]
+color = true
+log_file = "/home/openethereum/.local/share/openethereum/log/openethereum.log"
+logging = "blockchain=info,client=info,own_tx=trace"
