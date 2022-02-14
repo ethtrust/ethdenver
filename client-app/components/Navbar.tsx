@@ -82,7 +82,6 @@ export const Navbar = (props: Props) => {
                 <div className="hidden sm:block sm:ml-12">
                   <div className="flex space-x-12">
                     {navigation.map((item) => {
-                      if (item.name == "Create NFT") return;
                       return (
                         <Link key={item.name} href={item.href}>
                           <div className="px-3 py-2 font-medium border-b-2 border-transparent cursor-pointer">
@@ -95,11 +94,6 @@ export const Navbar = (props: Props) => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 space-x-4 font-medium sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <Link href="/createItem">
-                  <button className="hidden font-medium md:block">
-                    Create NFT
-                  </button>
-                </Link>
                 {connectedAccount ? (
                   <Menu as="div" className="relative ml-3">
                     <div>
