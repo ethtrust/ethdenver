@@ -6,8 +6,7 @@ set -ex
 MICROK8S=$(which k3s)
 
 if [ -z "$MICROK8S" ]; then
-  echo "Please install k3s"
-  exit 1
+  curl -sfL https://get.k3s.io | sh -
 fi
 
 GITHUB_URL=https://github.com/kubernetes/dashboard/releases
