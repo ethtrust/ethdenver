@@ -7,10 +7,11 @@ export const ConfigMap = async (
 ) => {
   const data: IMapping = await files.reduce(
     async (acc: Promise<IMapping>, filename: string) => {
+      const nextAcc = await acc;
       const contents = await readFile(filename);
       const key = basename(filename);
       return {
-        ...acc,
+        ...nextAcc,
         [key]: contents,
       };
     },

@@ -2,7 +2,7 @@
 mode = "passive"
 mode_timeout = 500
 mode_alarm = 3600
-chain = "/home/openethereum/local/share/openethereum/config/arbitrum.json"
+chain = "rinkeby"                                             #"/home/openethereum/.local/share/openethereum/config/arbitrum.json"
 db_path = "/home/openethereum/.local/share/openethereum/data"
 no_persistent_txqueue = false
 

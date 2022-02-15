@@ -1,13 +1,7 @@
 {
-  "name": "arbitrum rinkeby",
-  "engine": {
-    "arbitrum rinkeby": {
-      "params": {}
-    }
-  },
-  "genesis": {
-    "seal": {}
-  },
+  "name": "rinkeby",
+  "engine": {},
+  "genesis": {},
   "params": {
     "networkID": "66EEB"
   },

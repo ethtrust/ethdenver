@@ -1,0 +1,19 @@
+{
+  "name": "netgear-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "netgearAPI.js",
+  "scripts": {
+    "start": "node netgearAPI.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.17.2",
+    "md5": "^2.3.0"
+  }
+}
