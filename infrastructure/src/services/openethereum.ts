@@ -9,7 +9,7 @@ import { appNameSelector } from '@dpu/jkcfg-k8s/labels';
 import { Deployment } from '@dpu/jkcfg-k8s/deployment';
 import { VolumeTypes } from '@dpu/jkcfg-k8s/models';
 import { ConfigMap, Ingress } from '../helpers';
-import { hostname } from '../constants';
+// import { hostname } from '../constants';
 
 export async function OpenEthereum() {
   const name = 'openethereum';
@@ -132,7 +132,7 @@ export async function OpenEthereum() {
   const ingress = Ingress(name, {
     namespace,
     hosts: {
-      [hostname.chain]: backend,
+      localhost: backend,
     },
   });
 

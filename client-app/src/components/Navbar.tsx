@@ -9,6 +9,7 @@ import { getEllipsisTxt } from "../utils";
 import WalletSvg from "./svg/WalletSvg";
 import { ContextType } from "react";
 import { useActiveWeb3React } from "../hooks";
+import { LogoOnDark } from "./svg/logo-ondark";
 
 interface Props {}
 
@@ -37,7 +38,7 @@ export const Navbar = (props: Props) => {
 
   const disconnect = async () => {
     try {
-      deactivate();
+      await deactivate();
     } catch (e) {
       console.log("ERROR", e);
     }
@@ -71,21 +72,13 @@ export const Navbar = (props: Props) => {
               <div className="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
                 <div className="flex items-center flex-shrink-0">
                   <Link href="/">
-                    <img
-                      className="block w-8 h-8 cursor-pointer lg:hidden"
-                      src="/ethtrust.png"
-                      alt="EthTrust"
-                    />
+                    <LogoOnDark className="w-48 h-48 cursor-pointer lg:block" />
                   </Link>
                   <Link href="/">
-                    <img
-                      className="hidden w-8 h-8 cursor-pointer lg:block"
-                      src="/ethtrust-big.png"
-                      alt="EthTrust"
-                    />
+                    <LogoOnDark className="hidden w-8 h-8 cursor-pointer lg:hidden" />
                   </Link>
                 </div>
-                <div className="hidden sm:block sm:ml-12">
+                {/* <div className="hidden sm:block sm:ml-12">
                   <div className="flex space-x-12">
                     {navigation.map((item) => {
                       return (
@@ -97,7 +90,7 @@ export const Navbar = (props: Props) => {
                       );
                     })}
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 space-x-4 font-medium sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {account ? (
