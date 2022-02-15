@@ -10,7 +10,6 @@ setup-infrastructure:
 setup-client-app:
   #!/bin/bash
   cd client-app
-  yarn
   docker build -t localhost:5000/auser/client-app .
 
 build-docker:

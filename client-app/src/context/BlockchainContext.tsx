@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext, FC } from "react";
+import { useEffect, useState, createContext, useCallback, FC } from "react";
 import { ethers, Wallet } from "ethers";
 import { Bridge } from "arb-ts";
 import Web3Modal from "web3modal";
@@ -85,18 +85,18 @@ export const BlockchainProvider = ({ children }: Props) => {
     }
   };
 
-  const checkIsWalletConnected = async () => {
+  const checkIsWalletConnected = useCallback(async () => {
     const connected = localStorage.getItem("connected");
 
     if (connected != null) {
       console.log("connected ", connected);
-      connectWallet();
+      // connectWallet();
     }
-  };
+  }, []);
 
   useEffect(() => {
     checkIsWalletConnected();
-  }, []);
+  }, [checkIsWalletConnected, connectedAccount]);
 
   return (
     <BlockchainContext.Provider

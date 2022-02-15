@@ -31,7 +31,6 @@ export default function Web3ReactManager({
   // after eagerly trying injected, if the network connect ever isn't active or in an error state, activate itd
   useEffect(() => {
     if (triedEager && !networkActive && !networkError && !active) {
-      console.log("chain id changed here", network);
       activateNetwork(network);
     }
   }, [triedEager, networkActive, networkError, activateNetwork, active]);
@@ -57,15 +56,15 @@ export default function Web3ReactManager({
   }
 
   // if the account context isn't active, and there's an error on the network context, it's an irrecoverable error
-  if (!active && networkError && Object.keys(networkError).length > 0) {
-    return (
-      <div className="flex items-center justify-center h-80">
-        <div className="text-secondary">
-          {`Oops! An unknown error occurred. Please refresh the page, or visit from another browser or device`}
-        </div>
-      </div>
-    );
-  }
+  // if (!active && networkError && Object.keys(networkError).length > 0) {
+  //   return (
+  //     <div className="flex items-center justify-center h-80">
+  //       <div className="text-secondary">
+  //         {`Oops! An unknown error occurred. Please refresh the page, or visit from another browser or device`}
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // if neither context is active, spin
   // if (!active && !networkActive) {

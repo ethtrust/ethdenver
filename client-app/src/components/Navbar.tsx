@@ -71,10 +71,10 @@ export const Navbar = (props: Props) => {
               </div>
               <div className="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
                 <div className="flex items-center flex-shrink-0">
-                  <Link href="/">
+                  <Link href="/" passHref>
                     <LogoOnDark className="w-48 h-48 cursor-pointer lg:block" />
                   </Link>
-                  <Link href="/">
+                  <Link href="/" passHref>
                     <LogoOnDark className="hidden w-8 h-8 cursor-pointer lg:hidden" />
                   </Link>
                 </div>
