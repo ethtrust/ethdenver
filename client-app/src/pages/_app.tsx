@@ -43,6 +43,27 @@ function MyApp({
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
         />
         <title key="title">EthTrust</title>
+        <link rel="icon" type="image/png" href="favicon.png" />
+        {/* iPad Retina */}
+        <link
+          rel="apple-touch-icon-precomposed"
+          sizes="192x192"
+          href="android-chrome-192x192.png.png"
+        />
+        <link
+          rel="apple-touch-icon-precomposed"
+          sizes="16x16"
+          href="favicon-16x16.png"
+        />
+        {/* iPhone Retina */}
+        <link
+          rel="apple-touch-icon-precomposed"
+          sizes="32x32"
+          href="favicon-32x32.png"
+        />
+        {/* iPad 1 e 2 */}
+        {/* iPhone, iPod e Android 2.2+  */}
+        <link rel="manifest" href="/site.webmanifest" />
       </Head>
 
       <BlockchainWrapper>
