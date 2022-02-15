@@ -90,16 +90,16 @@ function postPoEPortConfig(powerMode) {
   return axios.post(
     "http://" + hostname + "/PoEPortConfig.cgi",
     "hash=" +
-      apiState.hash +
-      "&ACTION=Apply" +
-      "&portID=0" +
-      "&ADMIN_MODE=" +
-      powerMode +
-      "&PORT_PRIO=0" +
-      "&POW_MOD=3" +
-      "&POW_LIMT_TYP=2" +
-      "&POW_LIMT=30.0" +
-      "&DETEC_TYP=2",
+    apiState.hash +
+    "&ACTION=Apply" +
+    "&portID=0" +
+    "&ADMIN_MODE=" +
+    powerMode +
+    "&PORT_PRIO=0" +
+    "&POW_MOD=3" +
+    "&POW_LIMT_TYP=2" +
+    "&POW_LIMT=30.0" +
+    "&DETEC_TYP=2",
     {
       headers: {
         Cookie: apiState.sessionCookie,
@@ -154,7 +154,6 @@ function calculatePWHash(loginDom) {
 }
 
 poeAPI.get("/on", function (req, res) {
-  res.send("**STUB** - On Success");
   if (!apiState.sessionCookie || apiState.sessionCookie.length === 0) {
     console.log("No Session Cookie Found");
     getLogin()
@@ -173,7 +172,8 @@ poeAPI.get("/on", function (req, res) {
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
-      .catch((error) => console.log(error));
+      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
+      .then(() => res.json({ success: true, currentPoEState: '1' }));
   } else {
     console.log("Session Cookie Stored");
     getPoEPortConfig()
@@ -188,12 +188,12 @@ poeAPI.get("/on", function (req, res) {
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
-      .catch((error) => console.log(error));
+      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
+      .then(() => res.json({ success: true, currentPoEState: '1' }));
   }
 });
 
 poeAPI.get("/off", function (req, res) {
-  res.send("**STUB** - Off Success");
   if (!apiState.sessionCookie || apiState.sessionCookie.length === 0) {
     console.log("No Session Cookie Found");
     getLogin()
@@ -208,12 +208,12 @@ poeAPI.get("/off", function (req, res) {
       .then((postPoEPortConfigResp) =>
         handlePostPoEPortConfig(postPoEPortConfigResp)
       )
-      .then((localState) => console.log(localState))
       // Print State Obj for Debug
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
-      .catch((error) => console.log(error));
+      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
+      .then(() => res.json({ success: true, currentPoEState: '0' }));
   } else {
     console.log("Session Cookie Stored");
     getPoEPortConfig()
@@ -224,12 +224,44 @@ poeAPI.get("/off", function (req, res) {
       .then((postPoEPortConfigResp) =>
         handlePostPoEPortConfig(postPoEPortConfigResp)
       )
-      .then((localState) => console.log(localState))
       // Print State Obj for Debug
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
-      .catch((error) => console.log(error));
+      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
+      .then(() => res.json({ success: true, currentPoEState: '0' }));
+  }
+});
+
+poeAPI.get("/status", function (req, res) {
+  if (!apiState.sessionCookie || apiState.sessionCookie.length === 0) {
+    console.log("No Session Cookie Found");
+    getLogin()
+      .then((getLoginResponse) => handleGetLogin(getLoginResponse))
+      .then(() => postLogin())
+      .then((postLoginResponse) => handlePostLogin(postLoginResponse))
+      .then(() => getPoEPortConfig())
+      .then((getPoEPortConfigResp) =>
+        handleGetPoEPortConfig(getPoEPortConfigResp)
+      )
+      // Print State Obj for Debug
+      // .then(localState => console.log(localState))
+      // Logout is TBD - There's weidness there.
+      // .then(postLogout())
+      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
+      .then(() => res.json({ currentPoEState: apiState.poePortOneStatus }));
+  } else {
+    console.log("Session Cookie Stored");
+    getPoEPortConfig()
+      .then((getPoEPortConfigResp) =>
+        handleGetPoEPortConfig(getPoEPortConfigResp)
+      )
+      // Print State Obj for Debug
+      // .then(localState => console.log(localState))
+      // Logout is TBD - There's weidness there.
+      // .then(postLogout())
+      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
+      .then(() => res.json({ currentPoEState: apiState.poePortOneStatus }));
   }
 });
 

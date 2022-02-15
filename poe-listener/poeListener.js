@@ -15,7 +15,7 @@ web3.eth.net.isListening()
 			process.exit(1);
 		}
 	}).catch((web3Err) => {
-		console.log('Web3 failed to Connect. Shutting down.\n' + web3Err);
+		console.log('Web3 failed to connect. Shutting down.\n' + web3Err);
 		process.exit(1);
 	});
 
@@ -30,7 +30,7 @@ async function listenForEvents() {
 			console.log("Toggle On Caught");
 			axios.get('http://' + poeAPIURL + ':' + poeAPIPort + '/on')
 				.then(response => {
-					// Do Something
+					console.log(response);
 				})
 				.catch(error => {
 					console.log(error);
@@ -45,7 +45,7 @@ async function listenForEvents() {
 			console.log("Toggle Off Caught");
 			axios.get('http://' + poeAPIURL + ':' + poeAPIPort + '/off')
 				.then(response => {
-					// Do Something
+					console.log(response);
 				})
 				.catch(error => {
 					console.log(error);

@@ -1,7 +1,7 @@
 {
-	"poeAPIURL": "localhost",
+	"poeAPIURL": "127.0.0.1",
 	"poeAPIPort": 3000,
-	"web3ProviderURL": "localhost",
+	"web3ProviderURL": "127.0.0.1",
 	"web3ProviderPort": 8545,
 	"contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
 	"contractABI": [
