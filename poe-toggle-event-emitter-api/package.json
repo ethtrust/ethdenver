@@ -1,0 +1,16 @@
+{
+  "name": "poe-toggle-event-emitter-api",
+  "version": "1.0.0",
+  "description": "An Express API that Uses Web3 to Invoke the PoE Toggle Smart Contract Functions",
+  "main": "poeToggleEventEmitterAPI.js",
+  "scripts": {
+    "start": "node poeToggleEventEmitterAPI.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "EthTrust",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "web3": "^1.7.0"
+  }
+}
