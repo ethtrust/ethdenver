@@ -1,6 +1,12 @@
 import { useEffect, useState, createContext, FC } from "react";
-import { ethers } from "ethers";
+import { ethers, Wallet } from "ethers";
+import { Bridge } from "arb-ts";
 import Web3Modal from "web3modal";
+import { Web3ReactProvider } from "@web3-react/core";
+import dynamic from "next/dynamic";
+
+import Web3ReactManager from "../components/blockchain/Web3ReactManager";
+import getLibrary from "../functions/getLibrary";
 
 export type AppContextProps = {
   connectedAccount: string | undefined;
@@ -16,6 +22,17 @@ export const BlockchainContext = createContext<AppContextProps>(
 type Props = {
   children: React.ReactNode;
 };
+
+const Web3ProviderNetwork = dynamic(
+  () => import("../components/blockchain/Web3ProviderNetwork"),
+  {
+    ssr: false,
+  }
+);
+
+if (typeof window !== "undefined" && !!window.ethereum) {
+  window.ethereum.autoRefreshOnNetworkChange = false;
+}
 
 export const BlockchainProvider = ({ children }: Props) => {
   const [connectedAccount, setConnectedAccount] = useState<
@@ -45,8 +62,17 @@ export const BlockchainProvider = ({ children }: Props) => {
     if (connectedAccount == undefined) {
       return;
     }
-    const web3Modal = new Web3Modal();
+
+    const providerOptions = {};
+    const web3Modal = new Web3Modal({
+      network: "arbitrum",
+      providerOptions,
+    });
     const connection = await web3Modal.connect();
+
+    // const arbProvider = new ethers.providers.Web3Provider(window.ethereum);
+    // return arbProvider;
+
     return new ethers.providers.Web3Provider(connection);
   };
 
@@ -76,7 +102,11 @@ export const BlockchainProvider = ({ children }: Props) => {
     <BlockchainContext.Provider
       value={{ connectWallet, disconnect, getProvider, connectedAccount }}
     >
-      {children}
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <Web3ProviderNetwork getLibrary={getLibrary}>
+          <Web3ReactManager>{children}</Web3ReactManager>
+        </Web3ProviderNetwork>
+      </Web3ReactProvider>
     </BlockchainContext.Provider>
   );
 };

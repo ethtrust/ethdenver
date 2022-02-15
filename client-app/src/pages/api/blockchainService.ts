@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { marketAddress, nftAddress } from "../../config";
 
 export const rpcProvider = new ethers.providers.JsonRpcProvider(
-  process.env.NEXT_PUBLIC_ROPSTEN_URL
+  process.env.NEXT_PUBLIC_CHAIN_URL
 );
 
 export function getMarketContract(signer?: any) {
@@ -10,11 +10,7 @@ export function getMarketContract(signer?: any) {
   if (signer) {
     provider = signer;
   }
-  return new ethers.Contract(
-    marketAddress,
-    Market.abi,
-    provider
-  ) as Marketplace;
+  return new ethers.Contract(marketAddress, Market.abi, provider);
 }
 
 export function getTokenContract(signer?: any) {

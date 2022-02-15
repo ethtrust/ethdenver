@@ -7,11 +7,8 @@ import Link from "next/link";
 import { ethers } from "ethers";
 import { getEllipsisTxt } from "../utils";
 import WalletSvg from "./svg/WalletSvg";
-import {
-  AppContextProps,
-  BlockchainContext,
-} from "../context/BlockchainContext";
 import { ContextType } from "react";
+import { useActiveWeb3React } from "../hooks";
 
 interface Props {}
 
@@ -22,9 +19,9 @@ const navigation = [
 
 export const Navbar = (props: Props) => {
   const [scrolled, setScrolled] = useState(false);
-
-  const { connectedAccount, connectWallet, disconnect } =
-    useContext(BlockchainContext);
+  const context = useActiveWeb3React();
+  console.log("CONTEXT", context);
+  const { chainId, account, connector, connectWallet, deactivate } = context;
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -37,6 +34,15 @@ export const Navbar = (props: Props) => {
       setScrolled(false);
     }
   };
+
+  const disconnect = async () => {
+    try {
+      deactivate();
+    } catch (e) {
+      console.log("ERROR", e);
+    }
+  };
+
   return (
     <Disclosure
       as="nav"
@@ -94,7 +100,7 @@ export const Navbar = (props: Props) => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 space-x-4 font-medium sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {connectedAccount ? (
+                {account ? (
                   <Menu as="div" className="relative ml-3">
                     <div>
                       <Menu.Button className="flex items-center max-w-xs px-4 py-2 text-white transition rounded-full bg-gradient-to-tl from-indigo-500 via-purple-500 to-pink-500 hover:bg-gray-700 shadow-homogen font-poppins">
@@ -104,9 +110,7 @@ export const Navbar = (props: Props) => {
                           <WalletSvg className="w-5 h-5 text-white" />
                         </div>
 
-                        <div className="font-sm">
-                          {getEllipsisTxt(connectedAccount)}
-                        </div>
+                        <div className="font-sm">{getEllipsisTxt(account)}</div>
                       </Menu.Button>
                     </div>
                     <Transition

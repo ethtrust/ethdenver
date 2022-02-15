@@ -7,9 +7,11 @@ import Lottie from "react-lottie";
 import { useSpinner } from "../components/common/Spinner/SpinnerContext";
 import { getMarketContract, getTokenContract } from "./api/blockchainService";
 import { GlowButton } from "../components/common/GlowButton";
+import { useActiveWeb3React } from "../hooks";
 
 const Home: NextPage = ({ connectedAccount }: any) => {
   const { showSpinner, hideSpinner } = useSpinner();
+  const { chainId, account, connector } = useActiveWeb3React();
 
   useEffect(() => {}, []);
 
@@ -22,8 +24,6 @@ const Home: NextPage = ({ connectedAccount }: any) => {
         <meta name="description" content="EthTrust wallet controller" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <h1 className="text-white">{connectedAccount}</h1>
 
       <main className="">
         <div className="order-2 sm:order-1">
