@@ -5,7 +5,7 @@ import { NetworkContextName } from "../../constant";
 import dynamic from "next/dynamic";
 import { useWeb3React } from "@web3-react/core";
 import { useEagerConnect, useInactiveListener } from "../../hooks";
-import { network } from "../../config/wallets";
+import { network } from "../../config/connectors";
 
 const GnosisManagerNoSSR = dynamic(() => import("./GnosisManager"), {
   ssr: false,

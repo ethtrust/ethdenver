@@ -10,10 +10,6 @@ gen:
   rm -rf generated
   jk generate -v -i . -o generated dist/index.js
 
-build-docker:
-  #!/bin/bash
-  docker build -t localhost:5000/auser/netgearapi ../netgear-api
-  docker push localhost:5000/auser/netgearapi
 
 build: compile gen
 

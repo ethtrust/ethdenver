@@ -3,8 +3,8 @@ interface Props {
 }
 const st0 = { fill: "#DBDADA" };
 const st1 = { fill: "#FFFFFF" };
-const st2 = { fillRule: "evenodd", clipRule: "evenodd", fill: "#4C90CB" };
-const st3 = { fillRule: "evenodd", clipRule: "evenodd", fill: "#82B4DA" };
+const st2 = { fill: "#4C90CB" };
+const st3 = { fill: "#82B4DA" };
 export const LogoOnDark = ({ className }: Props) => (
   <svg
     version="1.1"

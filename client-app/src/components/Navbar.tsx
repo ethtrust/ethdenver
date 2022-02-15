@@ -21,8 +21,8 @@ const navigation = [
 export const Navbar = (props: Props) => {
   const [scrolled, setScrolled] = useState(false);
   const context = useActiveWeb3React();
-  console.log("CONTEXT", context);
-  const { chainId, account, connector, connectWallet, deactivate } = context;
+  const { chainId, account, connector, connectWallet, deactivate } =
+    context as any;
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);

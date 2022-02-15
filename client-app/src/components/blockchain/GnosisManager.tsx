@@ -9,5 +9,5 @@ const safeMultisigConnector = new SafeAppConnector();
 
 export default function GnosisManager(): JSX.Element {
   const triedToConnectToSafe = useSafeAppConnection(safeMultisigConnector);
-  return null;
+  return <></>;
 }

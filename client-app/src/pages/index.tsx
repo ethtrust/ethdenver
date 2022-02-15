@@ -5,7 +5,6 @@ import Head from "next/head";
 import Image from "next/image";
 import Lottie from "react-lottie";
 import { useSpinner } from "../components/common/Spinner/SpinnerContext";
-import { getMarketContract, getTokenContract } from "./api/blockchainService";
 import { GlowButton } from "../components/common/GlowButton";
 import { useActiveWeb3React } from "../hooks";
 

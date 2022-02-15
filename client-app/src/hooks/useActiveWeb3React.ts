@@ -6,12 +6,15 @@ import { Web3ReactContextInterface } from "@web3-react/core/dist/types";
 import { useWeb3React as useWeb3ReactCore } from "@web3-react/core";
 import { injected } from "../config/wallets";
 
-console.log("RPC_URLS", injected);
-
-export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & {
+interface CustomProps {
   chainId?: ChainId;
-} {
-  const context = useWeb3ReactCore<Web3Provider>();
+  connectWallet: () => Promise<void>;
+  disconnect: () => Promise<void>;
+}
+
+export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> &
+  CustomProps {
+  const context = useWeb3ReactCore<Web3Provider & CustomProps>();
   const contextNetwork = useWeb3ReactCore<Web3Provider>(NetworkContextName);
 
   const connectWallet = async (firstTime: boolean = false) => {

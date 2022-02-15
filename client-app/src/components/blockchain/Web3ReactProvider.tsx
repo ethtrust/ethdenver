@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import Loader from "../Loader";
-import { NetworkContextName } from "../../constants";
+import { NetworkContextName } from "../../constant";
 import dynamic from "next/dynamic";
-import { network } from "../../config/wallets";
-import useEagerConnect from "../../hooks/useEagerConnect";
-import useInactiveListener from "../../hooks/useInactiveListener";
+import { network } from "../../config/connectors";
+import { useEagerConnect } from "../../hooks/useEagerConnect";
+import { useInactiveListener } from "../../hooks/useInactiveListener";
 import { useWeb3React } from "@web3-react/core";
 
 const GnosisManagerNoSSR = dynamic(() => import("./GnosisManager"), {
@@ -61,9 +61,8 @@ export default function Web3ReactManager({
     return (
       <div className="flex items-center justify-center h-80">
         <div className="text-secondary">
-          {i18n._(
-            t`Oops! An unknown error occurred. Please refresh the page, or visit from another browser or device`
-          )}
+          Oops! An unknown error occurred. Please refresh the page, or visit
+          from another browser or device
         </div>
       </div>
     );

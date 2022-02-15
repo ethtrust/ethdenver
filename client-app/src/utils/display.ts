@@ -1,6 +1,5 @@
 import axios from "axios";
 import { create } from "ipfs-http-client";
-import { getTokenContract } from "../pages/api/blockchainService";
 
 /** Uses `URL.createObjectURL` free returned ObjectURL with `URL.RevokeObjectURL` when done with it.
  *

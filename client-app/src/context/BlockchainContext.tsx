@@ -20,7 +20,7 @@ export const BlockchainContext = createContext<AppContextProps>(
 );
 
 type Props = {
-  children: React.ReactNode;
+  children: any; //React.ReactNode;
 };
 
 const Web3ProviderNetwork = dynamic(

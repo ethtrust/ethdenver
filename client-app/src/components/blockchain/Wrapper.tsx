@@ -20,7 +20,7 @@ export const BlockchainContext = createContext<AppContextProps>(
 );
 
 type Props = {
-  children: React.ReactNode;
+  children: any;
 };
 
 const Web3ProviderNetwork = dynamic(() => import("./Web3ProviderNetwork"), {
@@ -36,64 +36,64 @@ export const BlockchainWrapper = ({ children }: Props) => {
     string | undefined
   >();
 
-  // const connectWallet = async (firstTime: boolean = false) => {
-  //   try {
-  //     console.log("Connecting metamask...");
-  //     const web3Modal = new Web3Modal({ cacheProvider: true });
-  //     const connection = await web3Modal.connect();
-  //     const provider = new ethers.providers.Web3Provider(connection);
-  //     const accounts = await provider.listAccounts();
-  //     if (accounts) {
-  //       setConnectedAccount(accounts[0]);
+  const connectWallet = async (firstTime: boolean = false) => {
+    try {
+      console.log("Connecting metamask...");
+      const web3Modal = new Web3Modal({ cacheProvider: true });
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      const accounts = await provider.listAccounts();
+      if (accounts) {
+        setConnectedAccount(accounts[0]);
 
-  //       if (firstTime) {
-  //         localStorage.setItem("connected", accounts[0]);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.log("Error ", error);
-  //   }
-  // };
+        if (firstTime) {
+          localStorage.setItem("connected", accounts[0]);
+        }
+      }
+    } catch (error) {
+      console.log("Error ", error);
+    }
+  };
 
-  // const getProvider = async () => {
-  //   if (connectedAccount == undefined) {
-  //     return;
-  //   }
+  const getProvider = async () => {
+    if (connectedAccount == undefined) {
+      return;
+    }
 
-  //   const providerOptions = {};
-  //   const web3Modal = new Web3Modal({
-  //     network: "arbitrum",
-  //     providerOptions,
-  //   });
-  //   const connection = await web3Modal.connect();
+    const providerOptions = {};
+    const web3Modal = new Web3Modal({
+      network: "arbitrum",
+      providerOptions,
+    });
+    const connection = await web3Modal.connect();
 
-  //   // const arbProvider = new ethers.providers.Web3Provider(window.ethereum);
-  //   // return arbProvider;
+    // const arbProvider = new ethers.providers.Web3Provider(window.ethereum);
+    // return arbProvider;
 
-  //   return new ethers.providers.Web3Provider(connection);
-  // };
+    return new ethers.providers.Web3Provider(connection);
+  };
 
-  // const disconnect = async () => {
-  //   const web3Modal = new Web3Modal({ cacheProvider: true });
-  //   if (web3Modal.cachedProvider) {
-  //     web3Modal.clearCachedProvider();
-  //     setConnectedAccount(undefined);
-  //     localStorage.removeItem("connected");
-  //   }
-  // };
+  const disconnect = async () => {
+    const web3Modal = new Web3Modal({ cacheProvider: true });
+    if (web3Modal.cachedProvider) {
+      web3Modal.clearCachedProvider();
+      setConnectedAccount(undefined);
+      localStorage.removeItem("connected");
+    }
+  };
 
-  // const checkIsWalletConnected = async () => {
-  //   const connected = localStorage.getItem("connected");
+  const checkIsWalletConnected = async () => {
+    const connected = localStorage.getItem("connected");
 
-  //   if (connected != null) {
-  //     console.log("connected ", connected);
-  //     connectWallet();
-  //   }
-  // };
+    if (connected != null) {
+      console.log("connected ", connected);
+      connectWallet();
+    }
+  };
 
-  // useEffect(() => {
-  //   checkIsWalletConnected();
-  // }, []);
+  useEffect(() => {
+    checkIsWalletConnected();
+  }, []);
 
   return (
     <Web3ReactProvider getLibrary={getLibrary}>

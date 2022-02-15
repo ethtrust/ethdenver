@@ -1,5 +1,6 @@
 import "../styles/globals.css";
 import { Fragment, FunctionComponent } from "react";
+import { GetStaticProps, NextComponentType, NextPageContext } from "next";
 
 import type { AppProps } from "next/app";
 import { SpinnerProvider } from "../components/common/Spinner/SpinnerContext";

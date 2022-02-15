@@ -3,7 +3,7 @@ import { createWeb3ReactRoot } from "@web3-react/core";
 
 const Web3ReactRoot = createWeb3ReactRoot(NetworkContextName);
 
-function Web3ProviderNetwork({ children, getLibrary }) {
+function Web3ProviderNetwork({ children, getLibrary }: any) {
   return <Web3ReactRoot getLibrary={getLibrary}>{children}</Web3ReactRoot>;
 }
 
