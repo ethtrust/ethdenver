@@ -1,7 +1,7 @@
 const axios = require("axios");
 const Web3 = require("web3");
 
-const listenerConfig = require("./config/listenerConfig.json");
+const listenerConfig = require("./config/poeListenerConfig.json");
 const {
   poeAPIURL,
   poeAPIPort,
@@ -15,8 +15,8 @@ const web3 = new Web3("ws://" + web3ProviderURL + ":" + web3ProviderPort);
 web3.eth.net
   .isListening()
   .then((isUp) => {
-    console.log("Web3 is Up: " + isUp);
     if (isUp) {
+      console.log("Web3 is Up");
       listenForEvents();
     } else {
       console.error("Web3 is not up. Shutting down.");
@@ -24,7 +24,7 @@ web3.eth.net
     }
   })
   .catch((web3Err) => {
-    console.log("Web3 failed to Connect. Shutting down.\n" + web3Err);
+    console.log("Web3 failed to connect. Shutting down.\n" + web3Err);
     process.exit(1);
   });
 
@@ -38,11 +38,10 @@ async function listenForEvents() {
     .ToggleOn()
     .on("data", (event) => {
       console.log("Toggle On Caught");
-      console.log(event);
       axios
         .get("http://" + poeAPIURL + ":" + poeAPIPort + "/on")
         .then((response) => {
-          console.log(response.data);
+          console.log(response);
         })
         .catch((error) => {
           console.log(error);
@@ -56,11 +55,10 @@ async function listenForEvents() {
     .ToggleOff()
     .on("data", (event) => {
       console.log("Toggle Off Caught");
-      console.log(event);
       axios
         .get("http://" + poeAPIURL + ":" + poeAPIPort + "/off")
         .then((response) => {
-          console.log(response.data);
+          console.log(response);
         })
         .catch((error) => {
           console.log(error);
