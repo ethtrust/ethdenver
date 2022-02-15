@@ -1,13 +1,11 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-const { response } = require("express");
-const e = require("express");
 var express = require("express");
 var md5 = require("md5");
 
 var poeAPI = express();
 
-var hostname = "192.168.0.139";
+var routerHostname = "192.168.0.139";
 var port = process.env.PORT || 3000;
 var apiState = {
   pwHash: "",
@@ -36,7 +34,7 @@ function merge(str1, str2) {
 }
 
 function getLogin() {
-  return axios.get("http://" + hostname + "/login.cgi");
+  return axios.get("http://" + routerHostname + "/login.cgi");
 }
 
 function handleGetLogin(getLoginResponse) {
@@ -52,7 +50,7 @@ function handleGetLogin(getLoginResponse) {
 
 function postLogin() {
   return axios.post(
-    "http://" + hostname + "/login.cgi",
+    "http://" + routerHostname + "/login.cgi",
     "password=" + apiState.pwHash
   );
 }
@@ -68,7 +66,7 @@ function handlePostLogin(postLoginResponse) {
 }
 
 function getPoEPortConfig() {
-  return axios.get("http://" + hostname + "/PoEPortConfig.cgi", {
+  return axios.get("http://" + routerHostname + "/PoEPortConfig.cgi", {
     headers: {
       Cookie: apiState.sessionCookie,
     },
@@ -88,7 +86,7 @@ function handleGetPoEPortConfig(getPoEPortConfigResponse) {
 
 function postPoEPortConfig(powerMode) {
   return axios.post(
-    "http://" + hostname + "/PoEPortConfig.cgi",
+    "http://" + routerHostname + "/PoEPortConfig.cgi",
     "hash=" +
     apiState.hash +
     "&ACTION=Apply" +
@@ -117,7 +115,7 @@ function handlePostPoEPortConfig(postPoEPortConfigResponse) {
 }
 
 function postLogout() {
-  return axios.post("http://" + hostname + "/logout.cgi", {
+  return axios.post("http://" + routerHostname + "/logout.cgi", {
     headers: {
       Cookie: apiState.sessionCookie,
     },
