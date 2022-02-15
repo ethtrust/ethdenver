@@ -1,6 +1,4 @@
 {
-	"web3ProviderURLOld": "35.175.98.163",
-	"web3ProviderPortOld": 8546,
 	"poeAPIURL": "localhost",
 	"poeAPIPort": 3000,
 	"web3ProviderURL": "localhost",

@@ -1,0 +1,16 @@
+{
+  "name": "poe-listener",
+  "version": "1.0.0",
+  "description": "Web3 Listener for PoE Toggle Events Emitted by Contract",
+  "main": "poeListener.js",
+  "scripts": {
+    "start": "node poeListener.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "EthTrust",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "web3": "^1.7.0"
+  }
+}
