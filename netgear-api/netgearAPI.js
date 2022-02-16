@@ -5,7 +5,7 @@ var md5 = require("md5");
 
 var poeAPI = express();
 
-var routerHostname = "192.168.0.139";
+var routerHostname = process.env.ROUTER_IP || "172.17.1.3";
 var port = process.env.PORT || 3000;
 var apiState = {
   pwHash: "",
@@ -88,16 +88,16 @@ function postPoEPortConfig(powerMode) {
   return axios.post(
     "http://" + routerHostname + "/PoEPortConfig.cgi",
     "hash=" +
-    apiState.hash +
-    "&ACTION=Apply" +
-    "&portID=0" +
-    "&ADMIN_MODE=" +
-    powerMode +
-    "&PORT_PRIO=0" +
-    "&POW_MOD=3" +
-    "&POW_LIMT_TYP=2" +
-    "&POW_LIMT=30.0" +
-    "&DETEC_TYP=2",
+      apiState.hash +
+      "&ACTION=Apply" +
+      "&portID=0" +
+      "&ADMIN_MODE=" +
+      powerMode +
+      "&PORT_PRIO=0" +
+      "&POW_MOD=3" +
+      "&POW_LIMT_TYP=2" +
+      "&POW_LIMT=30.0" +
+      "&DETEC_TYP=2",
     {
       headers: {
         Cookie: apiState.sessionCookie,
@@ -170,8 +170,12 @@ poeAPI.get("/on", function (req, res) {
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
-      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
-      .then(() => res.json({ success: true, currentPoEState: '1' }));
+      .catch((error) => {
+        res.sendStatus(500);
+        console.log(error);
+        process.exit(1);
+      })
+      .then(() => res.json({ success: true, currentPoEState: "1" }));
   } else {
     console.log("Session Cookie Stored");
     getPoEPortConfig()
@@ -186,8 +190,12 @@ poeAPI.get("/on", function (req, res) {
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
-      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
-      .then(() => res.json({ success: true, currentPoEState: '1' }));
+      .catch((error) => {
+        res.sendStatus(500);
+        console.log(error);
+        process.exit(1);
+      })
+      .then(() => res.json({ success: true, currentPoEState: "1" }));
   }
 });
 
@@ -210,8 +218,12 @@ poeAPI.get("/off", function (req, res) {
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
-      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
-      .then(() => res.json({ success: true, currentPoEState: '0' }));
+      .catch((error) => {
+        res.sendStatus(500);
+        console.log(error);
+        process.exit(1);
+      })
+      .then(() => res.json({ success: true, currentPoEState: "0" }));
   } else {
     console.log("Session Cookie Stored");
     getPoEPortConfig()
@@ -226,8 +238,12 @@ poeAPI.get("/off", function (req, res) {
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
-      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
-      .then(() => res.json({ success: true, currentPoEState: '0' }));
+      .catch((error) => {
+        res.sendStatus(500);
+        console.log(error);
+        process.exit(1);
+      })
+      .then(() => res.json({ success: true, currentPoEState: "0" }));
   }
 });
 
@@ -246,7 +262,11 @@ poeAPI.get("/status", function (req, res) {
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
-      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
+      .catch((error) => {
+        res.sendStatus(500);
+        console.log(error);
+        process.exit(1);
+      })
       .then(() => res.json({ currentPoEState: apiState.poePortOneStatus }));
   } else {
     console.log("Session Cookie Stored");
@@ -258,7 +278,11 @@ poeAPI.get("/status", function (req, res) {
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
-      .catch((error) => { res.sendStatus(500); console.log(error); process.exit(1); })
+      .catch((error) => {
+        res.sendStatus(500);
+        console.log(error);
+        process.exit(1);
+      })
       .then(() => res.json({ currentPoEState: apiState.poePortOneStatus }));
   }
 });

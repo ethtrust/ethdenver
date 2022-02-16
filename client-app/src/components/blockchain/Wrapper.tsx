@@ -98,7 +98,7 @@ export const BlockchainWrapper = ({ children }: Props) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>
-        <Web3ReactManager>{children}</Web3ReactManager>
+        <>{children}</>
       </Web3ProviderNetwork>
     </Web3ReactProvider>
   );

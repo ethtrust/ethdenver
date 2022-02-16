@@ -12,7 +12,7 @@ export async function POEListener() {
   const name = 'poe-listener';
   const namespace = name;
   const selector = appNameSelector(name);
-  const port = 8000;
+  const port = 4567;
 
   const service = new k8s.core.v1.Service(name, {
     spec: {
@@ -44,6 +44,16 @@ export async function POEListener() {
     },
   });
 
+  const sa = {
+    apiVersion: 'v1',
+    kind: 'ServiceAccount',
+    metadata: {
+      name,
+      namespace,
+    },
+    secrets: [{ name: 'registry' }],
+  };
+
   const { deployment, addContainer, addVolume } = Deployment(name, {
     labels: selector,
   });
@@ -53,7 +63,8 @@ export async function POEListener() {
       Container({
         name,
         port,
-        image: 'localhost:5000/auser/netgearapi',
+        image:
+          'docker-registry.docker-registry.svc.cluster.local:5000/ethtrust/netgearapi',
       }),
       {
         env: [
@@ -66,7 +77,9 @@ export async function POEListener() {
     )
   );
 
-  return finalize([service, ingress, deployment], {
+  // deployment.spec!['imagePullSecrets'] = [{ name: 'registry' }];
+
+  return finalize([service, ingress, deployment, sa], {
     labels: selector,
     namespace,
   });

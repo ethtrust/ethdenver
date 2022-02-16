@@ -14,7 +14,10 @@ const Home: NextPage = ({ connectedAccount }: any) => {
 
   useEffect(() => {}, []);
 
-  const handleUnlock = () => {};
+  const handleUnlock = () => {
+    console.log("handleUnlock ->", account);
+    // fetch
+  };
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen sm:flex-row sm:justify-evenly">
@@ -33,7 +36,7 @@ const Home: NextPage = ({ connectedAccount }: any) => {
           <h4 className="mt-8 text-lg font-medium leading-relaxed text-gray-200 ">
             Explore EthTrust
           </h4>
-          <GlowButton onClick={handleUnlock}>Explore Now</GlowButton>
+          <GlowButton onClick={handleUnlock}>Open wallet</GlowButton>
         </div>
       </main>
 

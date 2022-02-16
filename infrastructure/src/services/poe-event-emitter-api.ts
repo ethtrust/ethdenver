@@ -53,7 +53,7 @@ export async function POEEventEmitterApi() {
       Container({
         name,
         port,
-        image: 'localhost:5000/auser/event-emitter',
+        image: 'ethtrust/eventemitter',
       }),
       {
         env: [
@@ -65,6 +65,8 @@ export async function POEEventEmitterApi() {
       }
     )
   );
+
+  deployment.spec!['imagePullSecrets'] = [{ name: 'registry' }];
 
   return finalize([service, ingress, deployment], {
     labels: selector,

@@ -1,8 +1,27 @@
+// import { readFile } from '../utils';
 import { finalize } from '@dpu/jkcfg-k8s';
+// import * as Buffer from 'Buffer';
 
-export const DockerRegistry = () => {
-  const name = 'registry';
-  const namespace = 'docker-registry';
+export const DockerRegistry = async () => {
+  const name = 'docker-registry';
+  const namespace = name;
+
+  // const buf = await readFile('config/docker-config.json');
+  // const val = Buffer.from(buf).toString('base64');
+  const val =
+    'ew0KICAiYXV0aHMiOiB7DQogICAgImxvY2FsaG9zdDo1MDAwIjoge30NCiAgfQ0KfQ0K';
+  const secret = {
+    apiVersion: 'v1',
+    kind: 'Secret',
+    type: 'kubernetes.io/dockerconfigjson',
+    metadata: {
+      name,
+      namespace,
+    },
+    data: {
+      '.dockerconfigjson': val,
+    },
+  };
 
   const deploy = {
     apiVersion: 'apps/v1',
@@ -39,7 +58,7 @@ export const DockerRegistry = () => {
     apiVersion: 'v1',
     kind: 'Service',
     metadata: {
-      name: `${name}-service`,
+      name,
       namespace,
     },
     spec: {
@@ -59,7 +78,7 @@ export const DockerRegistry = () => {
     },
   };
 
-  return finalize([deploy, svc], {
+  return finalize([deploy, svc, secret], {
     labels: { app: name },
     namespace,
   });

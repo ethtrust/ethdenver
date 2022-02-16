@@ -25,11 +25,11 @@ kube-apply dir: compile gen
   #!/bin/bash
   namespaces=$(find ./generated -type f -name "*-namespace.yaml")
   for file in $namespaces; do
-    k3s kubectl apply -f $file
+    kubectl apply -f $file
   done
   files=$(find ./generated -mindepth 2 -type f -name "*.yaml")
   for file in $files; do
-    k3s kubectl apply -f $file 2>/dev/null
+    kubectl apply -f $file 2>/dev/null
   done
 
 kube-delete dir:

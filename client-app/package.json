@@ -19,6 +19,7 @@
     "@web3-react/network-connector": "^6.2.9",
     "@web3-react/walletconnect-connector": "^6.2.10",
     "@web3-react/walletlink-connector": "^6.2.12",
+    "Buffer": "^0.0.0",
     "arb-ts": "^1.0.2",
     "axios": "^0.25.0",
     "clsx": "^1.1.1",

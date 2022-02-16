@@ -5,7 +5,6 @@ import { GetStaticProps, NextComponentType, NextPageContext } from "next";
 import type { AppProps } from "next/app";
 import { SpinnerProvider } from "../components/common/Spinner/SpinnerContext";
 import { BlockchainWrapper } from "../components/blockchain/Wrapper";
-import { useActiveWeb3React } from "../hooks";
 import { useRouter } from "next/router";
 import Head from "next/head";
 

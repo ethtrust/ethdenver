@@ -154,7 +154,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@^17.0.17":
+"@types/node@*":
   version "17.0.17"
   resolved "https://registry.npmjs.org/@types/node/-/node-17.0.17.tgz"
   integrity sha512-e8PUNQy1HgJGV3iU/Bp2+D/DXh3PYeyli8LgIwsQcs1Ar1LoaWHSIT6Rw+H2rNJmiq6SNWiDytfx8+gYj7wDHw==
@@ -163,6 +163,11 @@
   version "10.17.60"
   resolved "https://registry.npmjs.org/@types/node/-/node-10.17.60.tgz"
   integrity sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==
+
+"@types/node@^17.0.18":
+  version "17.0.18"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.18.tgz#3b4fed5cfb58010e3a2be4b6e74615e4847f1074"
+  integrity sha512-eKj4f/BsN/qcculZiRSujogjvp5O/k4lOW5m35NopjZM/QwLOR075a8pJW5hD+Rtdm2DaCVPENS6KtSQnUD6BA==
 
 "@types/request@^2.47.1":
   version "2.48.8"
@@ -212,6 +217,11 @@
   integrity sha512-PpPrX7SZW9re6+Ha8ojZG4Se8AZXgf0GK6zmfqEuCsY49LFDNXO3SByp44X3dFEqtB73lkCDAdUazhAjVPiNwg==
   dependencies:
     "@types/node" "*"
+
+Buffer@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/Buffer/-/Buffer-0.0.0.tgz#82cf8e986a2109ff6d1d6f1c436e47d07127aea4"
+  integrity sha1-gs+OmGohCf9tHW8cQ25H0HEnrqQ=
 
 acorn-jsx@^5.3.1:
   version "5.3.2"
