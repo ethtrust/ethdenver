@@ -10,7 +10,13 @@
   "author": "EthTrust",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.0",
     "express": "^4.17.2",
     "web3": "^1.7.0"
+  },
+  "devDependencies": {
+    "envfile": "^6.17.0",
+    "hardhat": "^2.8.4",
+    "solc": "^0.8.11"
   }
 }
