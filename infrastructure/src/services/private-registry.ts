@@ -6,7 +6,7 @@ import { ConfigMap } from '../helpers';
 export const DockerRegistry = async () => {
   const name = 'docker-registry';
   const namespace = name;
-  const rootDir = '/usr/local/';
+  const rootDir = '/usr/local';
 
   const fileConfigMap = await ConfigMap(`${name}-config-map`, {
     namespace,

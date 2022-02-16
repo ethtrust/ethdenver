@@ -67,6 +67,7 @@ export async function POEListener() {
           'docker-registry.docker-registry.svc.cluster.local:5000/ethtrust/poelistener',
       }),
       {
+        serviceAccountName: name,
         env: [
           {
             name: 'PORT',
