@@ -63,8 +63,7 @@ export async function POEListener() {
       Container({
         name,
         port,
-        image:
-          'docker-registry.docker-registry.svc.cluster.local:5000/ethtrust/poelistener',
+        image: '192.168.0.232:5000/ethtrust/poelistener',
       }),
       {
         serviceAccountName: name,
@@ -78,7 +77,7 @@ export async function POEListener() {
     )
   );
 
-  // deployment.spec!['imagePullSecrets'] = [{ name: 'registry' }];
+  deployment.spec!['imagePullSecrets'] = [{ name: 'docker-registry' }];
 
   return finalize([service, ingress, deployment, sa], {
     labels: selector,

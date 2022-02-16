@@ -15,4 +15,5 @@ export const hostname = {
   mobileApp: `tinybyte.co`,
   chain: `chain.tinybyte.co`,
   netgearApi: `api.tinybyte.co`,
+  dockerRegistry: 'docker.tinybyte.co',
 };

@@ -7,6 +7,7 @@ export const DockerRegistry = async () => {
   const name = 'docker-registry';
   const namespace = name;
   const rootDir = '/usr/local';
+  const port = 5000;
 
   const fileConfigMap = await ConfigMap(`${name}-config-map`, {
     namespace,
@@ -51,7 +52,7 @@ export const DockerRegistry = async () => {
         spec: {
           volumes: [
             {
-              name: 'registry-config-map',
+              name: `${name}-config-map`,
               configMap: { name: `${name}-config-map` },
             },
           ],
@@ -69,10 +70,14 @@ export const DockerRegistry = async () => {
                   name: 'REGISTRY_HTTP_TLS_KEY',
                   value: `${rootDir}/config/tls.key`,
                 },
+                {
+                  name: 'REGISTRY_HTTP_SECRET',
+                  value: 'Something-random',
+                },
               ],
               volumeMounts: [
                 {
-                  name: 'registry-config-map',
+                  name: `${name}-config-map`,
                   mountPath: `${rootDir}/config`,
                 },
               ],
@@ -99,8 +104,7 @@ export const DockerRegistry = async () => {
         {
           name: 'docker-port',
           protocol: 'TCP',
-          port: 5000,
-          targetPort: 5000,
+          port,
         },
       ],
       loadBalancerIP: '192.168.0.232',

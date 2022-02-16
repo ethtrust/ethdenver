@@ -58,18 +58,18 @@ build-docker:
 
 #
 push-docker: build-docker
-  docker image tag ethtrust/clientapp localhost:5000/ethtrust/clientapp
-  docker image tag ethtrust/clientapp docker-registry.docker-registry.svc.cluster.local:5000/ethtrust/clientapp
-  docker image push localhost:5000/ethtrust/client-app
-  docker image tag ethtrust/netgearapi localhost:5000/ethtrust/netgearapi
-  docker image tag ethtrust/netgearapi docker-registry:5000/ethtrust/netgearapi
-  docker image push localhost:5000/ethtrust/netgearapi
-  docker image tag ethtrust/eventemitterapi localhost:5000/ethtrust/eventemitterapi
-  docker image tag ethtrust/eventemitterapi docker-registry:5000/ethtrust/eventemitterapi
-  docker image push localhost:5000/ethtrust/eventemitterapi
   docker image tag ethtrust/poelistener localhost:5000/ethtrust/poelistener
   docker image tag ethtrust/poelistener docker-registry.docker-registry.svc.cluster.local:5000/ethtrust/poelistener
   docker image push localhost:5000/ethtrust/poelistener
+  docker image tag ethtrust/clientapp localhost:5000/ethtrust/clientapp
+  docker image tag ethtrust/clientapp 192.168.0.232:5000/ethtrust/clientapp
+  docker image push localhost:5000/ethtrust/client-app
+  docker image tag ethtrust/netgearapi localhost:5000/ethtrust/netgearapi
+  docker image tag ethtrust/netgearapi 192.168.0.232:5000/ethtrust/netgearapi
+  docker image push localhost:5000/ethtrust/netgearapi
+  docker image tag ethtrust/eventemitterapi localhost:5000/ethtrust/eventemitterapi
+  docker image tag ethtrust/eventemitterapi 192.168.0.232:5000/ethtrust/eventemitterapi
+  docker image push localhost:5000/ethtrust/eventemitterapi
 
 start-docker-registry:
   #!/bin/bash

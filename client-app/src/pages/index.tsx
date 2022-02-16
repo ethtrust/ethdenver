@@ -16,7 +16,10 @@ const Home: NextPage = ({ connectedAccount }: any) => {
 
   const handleUnlock = () => {
     console.log("handleUnlock ->", account);
-    // fetch
+    fetch("http://localhost:4567", {
+      method: "POST",
+      data: JSON.stringify({ poeState: "ON" }),
+    });
   };
 
   return (
