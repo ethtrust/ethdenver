@@ -2,7 +2,7 @@
 
 const path = require('path');
 const { exec } = require('./openssl');
-const ipRegex = require('./ipRegex');
+const { ipRegex } = require('./ipRegex');
 
 const args = require('yargs')
   .env('AVA')

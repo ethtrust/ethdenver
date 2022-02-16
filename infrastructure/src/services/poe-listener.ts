@@ -64,7 +64,7 @@ export async function POEListener() {
         name,
         port,
         image:
-          'docker-registry.docker-registry.svc.cluster.local:5000/ethtrust/netgearapi',
+          'docker-registry.docker-registry.svc.cluster.local:5000/ethtrust/poelistener',
       }),
       {
         env: [

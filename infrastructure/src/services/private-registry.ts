@@ -1,10 +1,17 @@
 // import { readFile } from '../utils';
 import { finalize } from '@dpu/jkcfg-k8s';
 // import * as Buffer from 'Buffer';
+import { ConfigMap } from '../helpers';
 
 export const DockerRegistry = async () => {
   const name = 'docker-registry';
   const namespace = name;
+  const rootDir = '/usr/local/';
+
+  const fileConfigMap = await ConfigMap(`${name}-config-map`, {
+    namespace,
+    files: ['config/tls.crt', 'config/tls.key'],
+  });
 
   // const buf = await readFile('config/docker-config.json');
   // const val = Buffer.from(buf).toString('base64');
@@ -42,11 +49,33 @@ export const DockerRegistry = async () => {
           },
         },
         spec: {
+          volumes: [
+            {
+              name: 'registry-config-map',
+              configMap: { name: `${name}-config-map` },
+            },
+          ],
           containers: [
             {
               name: 'registry',
               image: 'registry:2',
               ports: [{ containerPort: 5000 }],
+              env: [
+                {
+                  name: 'REGISTRY_HTTP_TLS_CERTIFICATE',
+                  value: `${rootDir}/config/tls.crt`,
+                },
+                {
+                  name: 'REGISTRY_HTTP_TLS_KEY',
+                  value: `${rootDir}/config/tls.key`,
+                },
+              ],
+              volumeMounts: [
+                {
+                  name: 'registry-config-map',
+                  mountPath: `${rootDir}/config`,
+                },
+              ],
             },
           ],
         },
@@ -78,7 +107,7 @@ export const DockerRegistry = async () => {
     },
   };
 
-  return finalize([deploy, svc, secret], {
+  return finalize([deploy, svc, fileConfigMap, secret], {
     labels: { app: name },
     namespace,
   });
