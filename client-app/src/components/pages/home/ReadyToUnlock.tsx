@@ -10,21 +10,25 @@ export interface ReadyToUnlockProps {
 export const ReadyToUnlock = ({ isOn, handleClick }: ReadyToUnlockProps) => {
   const { chainId, account, connector } = useActiveWeb3React();
   const handleUnlock = async () => {
-    const poeState = isOn ? "OFF" : "ON";
-    if (!account) {
-      return;
+    let status = 200; // TODO: successful?
+    try {
+      const poeState = isOn ? "OFF" : "ON";
+      if (!account) {
+        return;
+      }
+      const resp = await fetch("http://localhost:4568/togglePoe", {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({ poeState, fromAddress: account.toUpperCase() }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      status = resp.status;
+    } catch (e) {
+    } finally {
+      handleClick(status == 200);
     }
-    const resp = await fetch("http://localhost:4568/togglePoe", {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify({ poeState, fromAddress: account.toUpperCase() }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    // const json = await resp.json();
-
-    handleClick(resp.status == 200);
   };
 
   return (
