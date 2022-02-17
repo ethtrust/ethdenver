@@ -49,7 +49,7 @@ export const Navbar = (props: Props) => {
     <Disclosure
       as="nav"
       className={clsx(
-        "fixed z-40 w-full transition-all ease-in-out duration-200 py-4",
+        "z-40 w-full transition-all ease-in-out duration-200 py-4",
         {
           " bg-[#1b1f2b] shadow-[#1b1f2b]/20 shadow-md py-1": scrolled,
         }

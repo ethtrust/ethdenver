@@ -7,9 +7,9 @@ interface Props {}
 
 const Layout = (props: React.PropsWithChildren<Props>) => {
   return (
-    <div className="flex flex-col justify-between w-full h-screen ">
+    <div className="flex flex-col justify-between w-full h-screen">
       <Navbar />
-      <div className="container px-4 mx-auto mb-auto sm:px-8 lg:px-16 xl:px-20">
+      <div className="container px-4 mx-auto sm:px-8 lg:px-16 xl:px-20">
         {props.children}
       </div>
       <Footer />

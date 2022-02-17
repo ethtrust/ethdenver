@@ -8,43 +8,24 @@ import { useSpinner } from "../components/common/Spinner/SpinnerContext";
 import { GlowButton } from "../components/common/GlowButton";
 import { useActiveWeb3React } from "../hooks";
 import { ConnectWalletButton } from "../components/blockchain/ConnectWalletButton";
+import { NotConnected, ReadyToUnlock } from "../components/pages/home";
+import { getStatus, handleUnlock } from "../functions/backend";
 
 const Home: NextPage = ({ connectedAccount }: any) => {
   const { showSpinner, hideSpinner } = useSpinner();
   const [isOn, setIsOn] = useState(false);
   const { chainId, account, connector } = useActiveWeb3React();
 
-  const getStatus = async () => {
-    const resp = await fetch("http://localhost:4569/status", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const json = await resp.json();
-    const state = parseInt(json.currentPoEState);
-    setIsOn(state === 1);
-  };
   useEffect(() => {
-    getStatus();
+    try {
+      getStatus();
+    } catch (e) {
+      console.error(`Error`, e);
+    }
   }, []);
 
-  const handleUnlock = async () => {
-    const poeState = isOn ? "OFF" : "ON";
-
-    const resp = await fetch("http://localhost:4568/togglePoe", {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify({ poeState, fromAddress: account.toUpperCase() }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    // const json = await resp.json();
-
-    if (resp.status == 200) {
-      setTimeout(async () => await getStatus(), 2000);
-    }
-  };
+  const handleUnlock = (_b: boolean) =>
+    setTimeout(async () => await getStatus(), 2000);
 
   const ReadyToTurnOn = (
     <div>
@@ -60,19 +41,8 @@ const Home: NextPage = ({ connectedAccount }: any) => {
     </div>
   );
 
-  const ConnectWallet = (
-    <div>
-      <h1 className="max-w-2xl text-3xl font-normal leading-tight text-white md:text-5xl">
-        EthTrust provides you with safety and security for your financial
-        assets.
-      </h1>
-      <h2 className="text-2xl mt-8">Get started by connecting your wallet.</h2>
-      <ConnectWalletButton />
-    </div>
-  );
-
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen sm:flex-row sm:justify-evenly">
+    <div className="flex flex-col justify-center w-full h-screen sm:flex-row sm:justify-evenly">
       <Head>
         <title>EthTrust wallet controller</title>
         <meta name="description" content="EthTrust wallet controller" />
@@ -82,7 +52,11 @@ const Home: NextPage = ({ connectedAccount }: any) => {
       <main className="mt-8">
         <div className="order-2 sm:order-1">
           {/* {isOn ? "ON" : "OFF"} */}
-          {account ? ReadyToTurnOn : ConnectWallet}
+          {account ? (
+            <ReadyToUnlock handleClick={handleUnlock} isOn={isOn} />
+          ) : (
+            <NotConnected />
+          )}
         </div>
       </main>
 
