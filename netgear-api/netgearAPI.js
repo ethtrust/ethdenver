@@ -77,7 +77,8 @@ function getPoEPortConfig() {
 
 function handleGetPoEPortConfig(getPoEPortConfigResponse) {
   if (checkForRedirect(getPoEPortConfigResponse.data)) {
-    Promise.reject(new Error("Session Invalid - Redirected to Login"));
+    // Promise.reject(new Error("Session Invalid - Redirected to Login"));
+    console.log("FIX ME");
   } else {
     let portStatusResp = retrievePoEPortState(getPoEPortConfigResponse.data);
     apiState.hash = portStatusResp.hash;

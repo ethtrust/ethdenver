@@ -7,6 +7,7 @@ import Lottie from "react-lottie";
 import { useSpinner } from "../components/common/Spinner/SpinnerContext";
 import { GlowButton } from "../components/common/GlowButton";
 import { useActiveWeb3React } from "../hooks";
+import { ConnectWalletButton } from "../components/blockchain/ConnectWalletButton";
 
 const Home: NextPage = ({ connectedAccount }: any) => {
   const { showSpinner, hideSpinner } = useSpinner();
@@ -41,28 +42,32 @@ const Home: NextPage = ({ connectedAccount }: any) => {
     // const json = await resp.json();
 
     if (resp.status == 200) {
-      await getStatus();
+      setTimeout(async () => await getStatus(), 2000);
     }
   };
 
   const ReadyToTurnOn = (
     <div>
-      <h1 className="max-w-xl text-4xl font-semibold leading-tight text-white md:text-5xl">
-        You are in good hands
+      <h1 className="max-w-xl text-4xl font-semibold leading-loose text-white md:text-4xl">
+        {isOn
+          ? "Your wallet is currently hot and ready to do your bidding"
+          : "Your wallet is offline and secure"}
       </h1>
 
-      <h4 className="mt-8 text-lg font-medium leading-relaxed text-gray-200 ">
-        Explore EthTrust
-      </h4>
-      <GlowButton onClick={handleUnlock}>Open wallet</GlowButton>
+      <GlowButton onClick={handleUnlock}>
+        {isOn ? "Deactivate" : "Activate"} wallet
+      </GlowButton>
     </div>
   );
 
   const ConnectWallet = (
     <div>
-      <h1 className="max-w-xl text-4xl font-semibold leading-tight text-white md:text-5xl">
-        Connect wallet to continue
+      <h1 className="max-w-2xl text-3xl font-normal leading-tight text-white md:text-5xl">
+        EthTrust provides you with safety and security for your financial
+        assets.
       </h1>
+      <h2 className="text-2xl mt-8">Get started by connecting your wallet.</h2>
+      <ConnectWalletButton />
     </div>
   );
 
@@ -74,7 +79,7 @@ const Home: NextPage = ({ connectedAccount }: any) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="">
+      <main className="mt-8">
         <div className="order-2 sm:order-1">
           {/* {isOn ? "ON" : "OFF"} */}
           {account ? ReadyToTurnOn : ConnectWallet}
