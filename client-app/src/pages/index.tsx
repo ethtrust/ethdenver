@@ -16,10 +16,20 @@ const Home: NextPage = ({ connectedAccount }: any) => {
 
   const handleUnlock = () => {
     console.log("handleUnlock ->", account);
-    fetch("http://localhost:4567", {
-      method: "POST",
-      data: JSON.stringify({ poeState: "ON" }),
-    });
+    fetch(
+      "http://localhost:4568/togglePoe",
+      {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({ poeState: "ON", fromAddress: account }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      (err, resp) => {
+        console.log("ERR", err, resp);
+      }
+    );
   };
 
   return (

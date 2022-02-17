@@ -1,17 +1,49 @@
+require("dotenv").config();
 const axios = require("axios");
 const Web3 = require("web3");
+const path = require("path");
+const fs = require("fs");
 
+const json = JSON.parse(
+  fs.readFileSync(
+    path.join(__dirname, "..", "demo-contract", "deployments", `output.json`),
+    "utf-8"
+  )
+);
+const contractName = process.env.CONTRACT_NAME;
+const contract = json.abi;
 const listenerConfig = require("./config/poeListenerConfig.json");
-const {
-  poeAPIURL,
-  poeAPIPort,
-  web3ProviderURL,
-  web3ProviderPort,
-  contractAddress,
-  contractABI,
-} = listenerConfig;
+// const {
+//   poeAPIURL,
+//   poeAPIPort,
+//   web3ProviderURL,
+//   web3ProviderPort,
+//   contractAddress,
+//   contractABI,
+// } = listenerConfig;
 
-const web3 = new Web3("ws://" + web3ProviderURL + ":" + web3ProviderPort);
+const poeAPIURL = process.env.POE_API_URL || listenerConfig.poeAPIURL;
+const poeAPIPort = process.env.POE_API_PORT || listenerConfig.poeAPIPort;
+const web3ProviderURL =
+  process.env.WEB3_PROVIDER_URL || listenerConfig.web3ProviderURL;
+const web3ProviderPort =
+  process.env.WEB3_PROVIDER_PORT || listenerConfig.web3ProviderPort;
+
+const contractDetails = json["31337"][0]["contracts"][contractName];
+const contractAddress = contractDetails.address;
+const contractABI = contractDetails.abi;
+// const contractAddress =
+//   process.env.CONTRACT_ADDRESS ||
+//   process.env.TEST_CONTRACT_ADDRESS ||
+//   listenerConfig.contractAddress;
+// const contractABI =
+// process.env.CONTRACT_ABI || contract["abi"] || listenerConfig.contractABI;
+
+console.log(contractABI);
+const port = process.env.PORT || 3000;
+
+const web3Address = "ws://" + web3ProviderURL + ":" + web3ProviderPort;
+const web3 = new Web3(web3Address);
 web3.eth.net
   .isListening()
   .then((isUp) => {
