@@ -22,36 +22,49 @@ const Home: NextPage = ({ connectedAccount }: any) => {
     const json = await resp.json();
     const state = parseInt(json.currentPoEState);
     setIsOn(state === 1);
-    // console.log(state);
-    // function (err, resp) {
-    //   console.log("ERR", err, resp);
-    //   if (!err) {
-    // const state = parseInt(resp.currentPoEState);
-    //     console.log("ERR", state);
-    //     setIsOn(state);
-    //   }
-    // }
   };
   useEffect(() => {
     getStatus();
   }, []);
 
-  const handleUnlock = () => {
-    fetch(
-      "http://localhost:4568/togglePoe",
-      {
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify({ poeState: "ON", fromAddress: account }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+  const handleUnlock = async () => {
+    const poeState = isOn ? "OFF" : "ON";
+
+    const resp = await fetch("http://localhost:4568/togglePoe", {
+      method: "POST",
+      mode: "cors",
+      body: JSON.stringify({ poeState, fromAddress: account.toUpperCase() }),
+      headers: {
+        "Content-Type": "application/json",
       },
-      (err, resp) => {
-        console.log("ERR", err, resp);
-      }
-    );
+    });
+    // const json = await resp.json();
+
+    if (resp.status == 200) {
+      await getStatus();
+    }
   };
+
+  const ReadyToTurnOn = (
+    <div>
+      <h1 className="max-w-xl text-4xl font-semibold leading-tight text-white md:text-5xl">
+        You are in good hands
+      </h1>
+
+      <h4 className="mt-8 text-lg font-medium leading-relaxed text-gray-200 ">
+        Explore EthTrust
+      </h4>
+      <GlowButton onClick={handleUnlock}>Open wallet</GlowButton>
+    </div>
+  );
+
+  const ConnectWallet = (
+    <div>
+      <h1 className="max-w-xl text-4xl font-semibold leading-tight text-white md:text-5xl">
+        Connect wallet to continue
+      </h1>
+    </div>
+  );
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen sm:flex-row sm:justify-evenly">
@@ -63,16 +76,8 @@ const Home: NextPage = ({ connectedAccount }: any) => {
 
       <main className="">
         <div className="order-2 sm:order-1">
-          <h1 className="max-w-xl text-4xl font-semibold leading-tight text-white md:text-5xl">
-            You are in good hands
-          </h1>
-
-          <h2>Current state: {isOn.toString()}</h2>
-
-          <h4 className="mt-8 text-lg font-medium leading-relaxed text-gray-200 ">
-            Explore EthTrust
-          </h4>
-          <GlowButton onClick={handleUnlock}>Open wallet</GlowButton>
+          {/* {isOn ? "ON" : "OFF"} */}
+          {account ? ReadyToTurnOn : ConnectWallet}
         </div>
       </main>
 

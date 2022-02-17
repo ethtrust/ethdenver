@@ -38,8 +38,6 @@ const contractABI = contractDetails.abi;
 //   listenerConfig.contractAddress;
 // const contractABI =
 // process.env.CONTRACT_ABI || contract["abi"] || listenerConfig.contractABI;
-
-console.log(contractABI);
 const port = process.env.PORT || 3000;
 
 const web3Address = "ws://" + web3ProviderURL + ":" + web3ProviderPort;
@@ -90,7 +88,8 @@ async function listenForEvents() {
       axios
         .get("http://" + poeAPIURL + ":" + poeAPIPort + "/off")
         .then((response) => {
-          console.log(response);
+          // console.log(response);
+          console.log("RESPONDED SUCCESSFULLY");
         })
         .catch((error) => {
           console.log(error);

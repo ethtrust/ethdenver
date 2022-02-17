@@ -50,6 +50,7 @@ const lightEmUpContract = new web3.eth.Contract(contractABI, contractAddress);
 
 // lightEmUpContract.methods.toggleOn.call({}).then(console.log);
 emitterAPI.post("/togglePoe", function (req, res) {
+  console.log("BODY", req.body);
   const fromAddress = req.body.fromAddress;
   if (req.body.poeState.toUpperCase() === "ON") {
     lightEmUpContract.methods
@@ -67,7 +68,9 @@ emitterAPI.post("/togglePoe", function (req, res) {
   } else if (req.body.poeState.toUpperCase() === "OFF") {
     lightEmUpContract.methods
       .toggleOff()
-      .call()
+      .send({
+        from: fromAddress,
+      })
       .then(() => res.sendStatus(200))
       .catch((err) => {
         res.status(500).json({ error: err });
