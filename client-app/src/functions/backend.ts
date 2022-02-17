@@ -1,10 +1,12 @@
 export interface HandleUnlockOptions {
   isOn: boolean;
   account?: string;
+  afterUnlock?: () => void;
 }
 export const getStatus = async () => {
   try {
-    const resp = await fetch("http://localhost:4569/status", {
+    console.log("Getting status");
+    const resp = await fetch("/api/v1/status", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -18,12 +20,17 @@ export const getStatus = async () => {
   }
 };
 
-export const handleUnlock = async ({ isOn, account }: HandleUnlockOptions) => {
+export const handleUnlock = async ({
+  isOn,
+  account,
+  afterUnlock,
+}: HandleUnlockOptions) => {
   const poeState = isOn ? "OFF" : "ON";
   if (!account) {
     return;
   }
-  await fetch("http://localhost:4568/togglePoe", {
+
+  await fetch("/api/v1/togglePoe", {
     method: "POST",
     mode: "cors",
     body: JSON.stringify({ poeState, fromAddress: account.toUpperCase() }),
@@ -31,4 +38,5 @@ export const handleUnlock = async ({ isOn, account }: HandleUnlockOptions) => {
       "Content-Type": "application/json",
     },
   });
+  afterUnlock ? afterUnlock() : setTimeout(getStatus, 5000);
 };

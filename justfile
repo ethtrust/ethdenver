@@ -56,6 +56,14 @@ build-docker:
   docker build -t ethtrust/poelistener ./poe-listener
   docker build -t ethtrust/eventemitterapi ./poe-toggle-event-emitter-api
 
+package-docker: build-docker
+  #!/bin/bash
+  mkdir -p ./package
+  docker save -o ./package/clientapp.tar ethtrust/clientapp
+  docker save -o ./package/netgearapi ethtrust/netgearapi
+  docker save -o ./package/poelistener ethtrust/poelistener
+  docker save -o ./package/eventemitterapi ethtrust/eventemitterapi
+
 #
 push-docker: build-docker
   docker image tag ethtrust/poelistener localhost:5000/ethtrust/poelistener

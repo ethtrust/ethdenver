@@ -1,0 +1,55 @@
+version: "2.1"
+services:
+  client-app:
+    build:
+      context: ./client-app
+    ports:
+      - "3000:3000"
+    environment:
+      - POE_API_URL=192.168.0.222
+    depends_on:
+      - "poe-event-api"
+      - "ethereum"
+
+  ethereum:
+    build:
+      context: "./demo-contract"
+    volumes:
+      - "./data:/root/.ethereum"
+    ports:
+      - "8545:8545"
+      - "30303:30303"
+    healthcheck:
+      test: 'curl -s -o /dev/null -H "Connection: close" -H "Upgrade: websocket" http://localhost:8545" || exit 1'
+      interval: 15s
+      timeout: 30s
+      retries: 10
+
+  # contract_deployment:
+  #   build:
+  #     context: "./demo-contract"
+  #   command: ["npm run deploy"]
+  #   depends_on:
+  #     - ethereum
+  poe-listener:
+    build:
+      context: "./poe-listener"
+    ports:
+      - "4567:4567"
+    depends_on:
+      ethereum:
+        condition: "service_healthy"
+
+  poe-event-api:
+    build: "./poe-toggle-event-emitter-api"
+    ports:
+      - "4568:4568"
+    environment:
+      - PORT=4568
+      - WEB3_PROVIDER_URL=localhost
+
+  netgear-api:
+    build:
+      context: "./netgear-api"
+    ports:
+      - "4569:4569"

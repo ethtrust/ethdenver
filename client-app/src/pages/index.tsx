@@ -24,12 +24,13 @@ const Home: NextPage = ({ connectedAccount }: any) => {
     }
   }, []);
 
-  const handleUnlock = (_b: boolean) =>
-    setTimeout(async () => await getStatus(), 2000);
+  // const handleUnlock = () => {
+  //   setTimeout(async () => await getStatus(), 2000);
+  // }
 
   const ReadyToTurnOn = (
     <div>
-      <h1 className="max-w-xl text-4xl font-semibold leading-loose text-white md:text-4xl">
+      <h1 className="max-w-3xl text-4xl font-semibold leading-loose text-white md:text-4xl">
         {isOn
           ? "Your wallet is currently hot and ready to do your bidding"
           : "Your wallet is offline and secure"}

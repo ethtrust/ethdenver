@@ -5,10 +5,7 @@ const path = require("path");
 const fs = require("fs");
 
 const json = JSON.parse(
-  fs.readFileSync(
-    path.join(__dirname, "..", "demo-contract", "deployments", `output.json`),
-    "utf-8"
-  )
+  fs.readFileSync(path.join(__dirname, "config", `output.json`), "utf-8")
 );
 const contractName = process.env.CONTRACT_NAME;
 const contract = json.abi;
@@ -41,6 +38,7 @@ const contractABI = contractDetails.abi;
 const port = process.env.PORT || 3000;
 
 const web3Address = "ws://" + web3ProviderURL + ":" + web3ProviderPort;
+console.log("Connecting to " + web3Address);
 const web3 = new Web3(web3Address);
 web3.eth.net
   .isListening()

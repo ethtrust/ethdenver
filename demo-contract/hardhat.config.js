@@ -27,7 +27,7 @@ module.exports = {
     deployer: 0,
   },
   networks: {
-    hardhat: {
+    localhost: {
       initialBaseFeePerGas: 0, // to fix : https://github.com/sc-forks/solidity-coverage/issues/652, see https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136
     },
     localhost: {

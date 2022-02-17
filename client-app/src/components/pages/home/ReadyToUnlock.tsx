@@ -1,34 +1,23 @@
+import { useState } from "react";
 import { GlowButton } from "../../common/GlowButton";
 import { useActiveWeb3React } from "../../../hooks";
 import { handleUnlock, getStatus } from "../../../functions/backend";
 
 export interface ReadyToUnlockProps {
-  isOn: boolean;
-  handleClick: (bool) => void;
+  isOn?: boolean;
+  handleClick: (b: any) => void;
 }
 
-export const ReadyToUnlock = ({ isOn, handleClick }: ReadyToUnlockProps) => {
+export const ReadyToUnlock = ({ handleClick }: ReadyToUnlockProps) => {
   const { chainId, account, connector } = useActiveWeb3React();
-  const handleUnlock = async () => {
-    let status = 200; // TODO: successful?
-    try {
-      const poeState = isOn ? "OFF" : "ON";
-      if (!account) {
-        return;
-      }
-      const resp = await fetch("http://localhost:4568/togglePoe", {
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify({ poeState, fromAddress: account.toUpperCase() }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      status = resp.status;
-    } catch (e) {
-    } finally {
-      handleClick(status == 200);
-    }
+  const [isOn, setIsOn] = useState(false);
+
+  const afterUnlock = async () => {
+    setTimeout(async () => {
+      const res = await getStatus();
+      console.log("RES", res);
+      setIsOn(!isOn);
+    }, 6000);
   };
 
   return (
@@ -43,7 +32,9 @@ export const ReadyToUnlock = ({ isOn, handleClick }: ReadyToUnlockProps) => {
         </div>
       </div>
       <div className="justify-center items-center mb-auto mx-auto">
-        <GlowButton onClick={handleUnlock}>
+        <GlowButton
+          onClick={() => handleUnlock({ isOn, afterUnlock, account })}
+        >
           {isOn ? "Deactivate" : "Activate"} wallet
         </GlowButton>
       </div>

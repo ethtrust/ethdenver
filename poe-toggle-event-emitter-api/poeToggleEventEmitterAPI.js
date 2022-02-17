@@ -16,10 +16,7 @@ const contractName = process.env.CONTRACT_NAME;
 
 // TODO: move me, kthx
 const json = JSON.parse(
-  fs.readFileSync(
-    path.join(__dirname, "..", "demo-contract", "deployments", `output.json`),
-    "utf-8"
-  )
+  fs.readFileSync(path.join(__dirname, "build", `output.json`), "utf-8")
 );
 // const contract = json.contracts[`${contractName}.sol`][contractName];
 
@@ -45,7 +42,9 @@ if (
   process.exit(-1);
 }
 
-const web3 = new Web3("ws://" + web3ProviderURL + ":" + web3ProviderPort);
+const web3Addr = "ws://" + web3ProviderURL + ":" + web3ProviderPort;
+console.log("web3Addr", web3Addr);
+const web3 = new Web3(web3Addr);
 const lightEmUpContract = new web3.eth.Contract(contractABI, contractAddress);
 
 // lightEmUpContract.methods.toggleOn.call({}).then(console.log);

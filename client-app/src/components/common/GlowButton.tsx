@@ -2,7 +2,7 @@ import React from "react";
 
 interface Props {
   children: React.ReactNode;
-  onClick?: React.MouseEventHandler;
+  onClick?: (b: any) => void;
 }
 
 export const GlowButton = ({ children, onClick }: Props) => {
