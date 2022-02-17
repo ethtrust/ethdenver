@@ -1,3 +1,4 @@
+require("dotenv").config();
 const axios = require("axios");
 const cheerio = require("cheerio");
 var express = require("express");
@@ -196,7 +197,7 @@ poeAPI.get("/on", function (req, res) {
       .catch((error) => {
         res.sendStatus(500);
         console.log(error);
-        process.exit(1);
+        // process.exit(1);
       })
       .then(() => res.json({ success: true, currentPoEState: "1" }));
   }
