@@ -5,7 +5,7 @@
       "chainId": "421611",
       "contracts": {
         "EthTrustDenverDemo": {
-          "address": "0xbd95f8c32014dc76ae4b681f11da601c28ecf97c",
+          "address": "0xbd95F8c32014dC76aE4B681F11dA601c28EcF97C",
           "abi": [
             {
               "inputs": [],

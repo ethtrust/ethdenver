@@ -4,47 +4,28 @@ const Web3 = require("web3");
 const path = require("path");
 const fs = require("fs");
 
-const json = JSON.parse(
+const listenerConfig = require("./config/poeListenerConfig.json");
+const compileOutputJson = JSON.parse(
   fs.readFileSync(path.join(__dirname, "config", `output.json`), "utf-8")
 );
-const contractName = process.env.CONTRACT_NAME;
-const contract = json.abi;
-const listenerConfig = require("./config/poeListenerConfig.json");
-// const {
-//   poeAPIURL,
-//   poeAPIPort,
-//   web3ProviderURL,
-//   web3ProviderPort,
-//   contractAddress,
-//   contractABI,
-// } = listenerConfig;
 
 const poeAPIURL = process.env.POE_API_URL || listenerConfig.poeAPIURL;
 const poeAPIPort = process.env.POE_API_PORT || listenerConfig.poeAPIPort;
-const web3ProviderURL =
-  process.env.WEB3_PROVIDER_URL || listenerConfig.web3ProviderURL;
-const web3ProviderPort =
-  process.env.WEB3_PROVIDER_PORT || listenerConfig.web3ProviderPort;
+const web3ProviderURL = process.env.WEB3_PROVIDER_URL || listenerConfig.web3ProviderURL;
+const chainIdCfg = process.env.CHAIN_ID || listenerConfig.chainId;
 
-const contractDetails = json["31337"][0]["contracts"][contractName];
+const contractName = process.env.CONTRACT_NAME;
+const contractDetails = compileOutputJson[chainIdCfg][0]["contracts"][contractName];
 const contractAddress = contractDetails.address;
 const contractABI = contractDetails.abi;
-// const contractAddress =
-//   process.env.CONTRACT_ADDRESS ||
-//   process.env.TEST_CONTRACT_ADDRESS ||
-//   listenerConfig.contractAddress;
-// const contractABI =
-// process.env.CONTRACT_ABI || contract["abi"] || listenerConfig.contractABI;
-const port = process.env.PORT || 3000;
 
-const web3Address = "ws://" + web3ProviderURL + ":" + web3ProviderPort;
-console.log("Connecting to " + web3Address);
-const web3 = new Web3(web3Address);
+console.log("Connecting to " + web3ProviderURL);
+const web3 = new Web3(web3ProviderURL);
 web3.eth.net
-  .isListening()
-  .then((isUp) => {
-    if (isUp) {
-      console.log("Web3 is Up");
+  .getId()
+  .then((chainId) => {
+    if (chainId === parseInt(chainIdCfg)) {
+      console.log("Web3 is Up on Aribtrum Testnet (Rinkeby)");
       listenForEvents();
     } else {
       console.error("Web3 is not up. Shutting down.");
@@ -63,9 +44,9 @@ async function listenForEvents() {
   // Handle the Toggle On Event
   //   Catch the event and invoke a REST call to toggle the POE on.
   lightEmUpContract.events
-    .ToggleOn()
+    .OnIntent()
     .on("data", (event) => {
-      console.log("Toggle On Caught");
+      console.log("On Intent Caught");
       axios
         .get("http://" + poeAPIURL + ":" + poeAPIPort + "/on")
         .then((response) => {
@@ -80,14 +61,14 @@ async function listenForEvents() {
   // Handle the Toggle Off Event
   //   Catch the event and invoke a REST call to toggle the POE off.
   lightEmUpContract.events
-    .ToggleOff()
+    .OffIntent()
     .on("data", (event) => {
-      console.log("Toggle Off Caught");
+      console.log("Off Intent Caught");
       axios
         .get("http://" + poeAPIURL + ":" + poeAPIPort + "/off")
         .then((response) => {
-          // console.log(response);
-          console.log("RESPONDED SUCCESSFULLY");
+          console.log(response);
+          // console.log("RESPONDED SUCCESSFULLY");
         })
         .catch((error) => {
           console.log(error);

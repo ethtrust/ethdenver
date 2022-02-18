@@ -8,7 +8,7 @@ var md5 = require("md5");
 var poeAPI = express();
 poeAPI.use(cors());
 
-var routerHostname = process.env.ROUTER_IP || "192.168.0.222";
+var routerHostname = process.env.ROUTER_IP || "172.17.1.6";
 var port = process.env.PORT || 3000;
 var apiState = {
   pwHash: "",
