@@ -18,7 +18,7 @@ WORKDIR /usr/src/app
 # Set tini as entrypoint
 ENTRYPOINT ["/usr/bin/tini", "--"]
 # copy project file
-COPY package.json .
+COPY package.json package-lock.json .
 
 #
 # ---- Dependencies ----
