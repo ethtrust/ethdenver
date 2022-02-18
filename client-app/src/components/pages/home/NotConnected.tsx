@@ -22,7 +22,7 @@ export const NotConnected = (props: NotConnectedProps) => {
         <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
           <span className="block">
             EthTrust provides you with safety and security for your financial
-            assets..
+            assets.
           </span>
         </h2>
         <p className="mt-4 text-lg leading-6 text-indigo-200">
