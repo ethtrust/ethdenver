@@ -9,7 +9,7 @@ const web3ProviderPort = process.env.NEXT_PUBLIC_WEB3_PROVIDER_PORT;
 
 export const contractWeb3Connection = (
   contractName: string,
-  signer: ethers.Signer = null,
+  signer: ethers.Signer | undefined = undefined,
   chainId: string = "421611"
 ) => {
   const contractDetails = (contractJson as any)[chainId][0]["contracts"][
@@ -18,8 +18,8 @@ export const contractWeb3Connection = (
   const contractAddress = contractDetails.address;
   const contractABI = contractDetails.abi;
 
-  const web3Addr = web3ProviderURL;
-  const web3 = new Web3(web3Addr);
+  // const web3Addr = web3ProviderURL;
+  // const web3 = new Web3(web3Addr);
   const contractInst = new ethers.Contract(
     contractAddress,
     contractABI,

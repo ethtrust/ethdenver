@@ -1,14 +1,16 @@
 import { contractWeb3Connection } from "../utils";
+import { ethers } from "ethers";
 
 const contractName =
   process.env.NEXT_PUBLIC_CONTRACT_NAME || "EthTrustDenverDemo";
 
 export interface HandleUnlockOptions {
-  isOn: boolean;
+  isOn: boolean | undefined;
   account?: string | null;
   afterUnlock?: () => void;
+  provider?: any | undefined; // TODO: define this as an ethers.Provider
 }
-export const getStatus = async ({ provider }) => {
+export const getStatus = async ({ provider }: { provider: any }) => {
   try {
     const contract = contractWeb3Connection(contractName, provider.getSigner());
     return contract.isOn();
