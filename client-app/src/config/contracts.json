@@ -1,11 +1,11 @@
 {
-  "31337": [
+  "421611": [
     {
-      "name": "localhost",
-      "chainId": "31337",
+      "name": "Arbitrum Rinkeby",
+      "chainId": "421611",
       "contracts": {
         "EthTrustDenverDemo": {
-          "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+          "address": "0xbd95F8c32014dC76aE4B681F11dA601c28EcF97C",
           "abi": [
             {
               "inputs": [],

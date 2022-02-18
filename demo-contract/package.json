@@ -3,7 +3,7 @@
   "scripts": {
     "node": "npm run hardhat -- node",
     "deploy": "npm run hardhat -- deploy --network localhost --export-all deployments/output.json",
-    "deploy:event-emitter": "cp ./deployments/output.json ../client-app/src/config/contracts.json",
+    "deploy:client-app": "cp ./deployments/output.json ../client-app/src/config/contracts.json",
     "deploy:event-listener": "cp ./deployments/output.json ../poe-listener/config",
     "deploy:local": "npm run deploy && npm run deploy:event-emitter && npm run deploy:event-listener",
     "console": "npm run hardhat -- console --network localhost",

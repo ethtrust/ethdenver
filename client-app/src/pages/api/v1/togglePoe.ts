@@ -16,18 +16,14 @@ export default async function handlePOEApi(
     if (poeState === "ON") {
       const resp = await lightEmUpContract.methods.toggleOn().send({
         from: fromAddress,
+        gas: 2000000,
       });
-      if (resp.isAxiosError) {
-        return res.status(500).json({ status: false });
-      }
       return res.status(200).json({ status: true });
     } else if (poeState === "OFF") {
       const resp = await lightEmUpContract.methods.toggleOff().send({
         from: fromAddress,
+        gas: 2000000,
       });
-      if (resp.isAxiosError) {
-        return res.status(500).json({ status: false });
-      }
       return res.status(200).json({ status: true });
     } else {
       return res

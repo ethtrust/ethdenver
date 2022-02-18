@@ -14,20 +14,37 @@ import { getStatus, handleUnlock } from "../functions/backend";
 const Home: NextPage = ({ connectedAccount }: any) => {
   const { showSpinner, hideSpinner } = useSpinner();
   const [isOn, setIsOn] = useState(false);
-  const { chainId, account, connector } = useActiveWeb3React();
+  const [loading, setLoading] = useState(false);
+  const {
+    chainId,
+    account,
+    connector,
+    library: provider,
+  } = useActiveWeb3React();
 
-  const handleOffIntent = (err: Error | null, data: any) => {
-    console.log("Off intent");
+  const handleOffIntent = (data: any) => {
+    // if (data && data.from === account) {
+    // showSpinner();
+    setLoading(true);
+    // }
   };
-  const handleConfirmOff = (err: Error | null, data: any) => {
-    console.log("ConfirmOff");
+  const handleConfirmOff = (data: any) => {
+    hideSpinner();
+    setLoading(false);
+    setIsOn(false);
+    console.log("Confirm off", isOn);
   };
 
-  const handleOnIntent = (err: Error | null, data: any) => {
-    console.log("On intent");
+  const handleOnIntent = (data: any) => {
+    // if (data && data.from === account) {
+    // showSpinner();
+    setLoading(true);
+    // }
   };
-  const handleConfirmOn = (err: Error | null, data: any) => {
-    console.log("ConfirmOn");
+  const handleConfirmOn = (data: any) => {
+    hideSpinner();
+    setLoading(false);
+    setIsOn(true);
   };
 
   useContractEvent("OffIntent", handleOffIntent);
@@ -37,11 +54,11 @@ const Home: NextPage = ({ connectedAccount }: any) => {
 
   useEffect(() => {
     try {
-      getStatus();
+      getStatus({ provider });
     } catch (e) {
       console.error(`Error`, e);
     }
-  }, []);
+  }, [provider]);
 
   // const handleUnlock = () => {
   //   setTimeout(async () => await getStatus(), 2000);
@@ -55,9 +72,13 @@ const Home: NextPage = ({ connectedAccount }: any) => {
           : "Your wallet is offline and secure"}
       </h1>
 
-      <GlowButton onClick={handleUnlock}>
-        {isOn ? "Deactivate" : "Activate"} wallet
-      </GlowButton>
+      {loading ? (
+        <div>Loading</div>
+      ) : (
+        <GlowButton onClick={handleUnlock}>
+          {isOn ? "Deactivate" : "Activate"} wallet
+        </GlowButton>
+      )}
     </div>
   );
 

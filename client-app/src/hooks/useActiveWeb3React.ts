@@ -70,8 +70,7 @@ export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> &
       // const chainId = provider.network.chainId;
       await context.activate(injected);
       if (context.error && context.error.name === "UnsupportedChainIdError") {
-        const resp = await switchNetwork(provider);
-        console.log("BLAH", context);
+        await switchNetwork(provider);
       }
     } catch (error) {
       console.log(error);

@@ -1,19 +1,17 @@
+import { contractWeb3Connection } from "../utils";
+
+const contractName =
+  process.env.NEXT_PUBLIC_CONTRACT_NAME || "EthTrustDenverDemo";
+
 export interface HandleUnlockOptions {
   isOn: boolean;
   account?: string | null;
   afterUnlock?: () => void;
 }
-export const getStatus = async () => {
+export const getStatus = async ({ provider }) => {
   try {
-    console.log("Getting status");
-    const resp = await fetch("/api/v1/status", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const json = await resp.json();
-    const state = parseInt(json.currentPoEState);
-    return state === 1;
+    const contract = contractWeb3Connection(contractName, provider.getSigner());
+    return contract.isOn();
   } catch (e) {
     // TODO: the server is down
     return false;
@@ -23,20 +21,30 @@ export const getStatus = async () => {
 export const handleUnlock = async ({
   isOn,
   account,
-  afterUnlock,
-}: HandleUnlockOptions) => {
+  provider,
+}: // afterUnlock,
+HandleUnlockOptions) => {
   const poeState = isOn ? "OFF" : "ON";
   if (!account) {
     return;
   }
 
-  await fetch("/api/v1/togglePoe", {
-    method: "POST",
-    mode: "cors",
-    body: JSON.stringify({ poeState, fromAddress: account.toUpperCase() }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  afterUnlock ? afterUnlock() : setTimeout(getStatus, 5000);
+  // Try signing the transacttion
+  // const signedTxn = await
+
+  try {
+    const contract = contractWeb3Connection(contractName, provider.getSigner());
+
+    let resp;
+    if (isOn) {
+      resp = await contract.toggleOn();
+    } else {
+      resp = await contract.toggleOff();
+    }
+    console.log("resp", resp);
+  } catch (e) {
+    console.log(`Error on POST`, e);
+  } finally {
+    // afterUnlock ? afterUnlock() : setTimeout(getStatus, 5000);
+  }
 };

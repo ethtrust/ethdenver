@@ -10,28 +10,24 @@ export type IHandler = (err: Error | null, a?: any) => any;
 
 const identity = (err: Error | null, a: any) => a;
 
-const eventOptions = {
-  fromBlock: "latest",
-};
-
 export function useContractEvent(
   eventName: string,
   handler: IHandler = identity,
   contractName: string = defaultContractName
 ) {
-  const { active, error, activate } = useWeb3ReactCore(); // specifically using useWeb3React because of what this hook does
-  const contractInst = contractWeb3Connection(contractName);
-  const event = contractInst.events[eventName];
+  const { active, error, activate, library } = useWeb3ReactCore(); // specifically using useWeb3React because of what this hook does
 
   useEffect(() => {
-    if (!event) return;
+    if (!active) return;
+    const contractInst = contractWeb3Connection(
+      contractName,
+      library.getSigner()
+    );
 
-    event(eventOptions).addListener("data", (data: any) => handler(null, data));
-    event(eventOptions).addListener("error", (err: any) => handler(err));
+    contractInst.on(eventName, handler);
 
     return () => {
-      event(eventOptions).removeListener("data", handler);
-      event(eventOptions).removeListener("error", handler);
+      contractInst.off(eventName, handler);
     };
-  }, [event, handler]);
+  }, [handler, active, contractName, library, eventName]);
 }

@@ -9,24 +9,23 @@ export interface ReadyToUnlockProps {
   handleClick: (b: any) => void;
 }
 
-export const ReadyToUnlock = ({ handleClick }: ReadyToUnlockProps) => {
+export const ReadyToUnlock = ({ handleClick, isOn }: ReadyToUnlockProps) => {
   const { showSpinner, hideSpinner } = useSpinner();
-  const { chainId, account, connector } = useActiveWeb3React();
-  const [isOn, setIsOn] = useState(false);
+  const ctx = useActiveWeb3React();
 
-  const afterUnlock = async () => {
-    setTimeout(async () => {
-      const res = await getStatus();
-      console.log("RES =>", res);
-      isOn !== res && setIsOn(res);
-    }, 6000);
-  };
+  const { chainId, account, connector, library: provider } = ctx;
+
+  // const afterUnlock = async () => {
+  //   setTimeout(async () => {
+  //     const res = await getStatus({ provider });
+  //     console.log("RES =>", res);
+  //     isOn !== res && setIsOn(res);
+  //   }, 6000);
+  // };
 
   const onActivateClick = async () => {
     showSpinner(true);
-    await handleUnlock({ isOn, afterUnlock, account });
-    // TODO: GROSS
-    setTimeout(() => hideSpinner(), 2000);
+    await handleUnlock({ isOn, account, provider });
   };
 
   return (
