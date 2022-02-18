@@ -19,7 +19,7 @@ export const ConnectWalletButton = (props: any) => {
   };
 
   return (
-    <div className="absolute inset-y-0 right-0 flex items-center pr-2 space-x-4 font-medium sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+    <div className="inset-y-0 right-0 flex items-center pr-2 space-x-4 font-medium sm:static sm:inset-auto sm:ml-6 sm:pr-0">
       {account ? (
         <Menu as="div" className="relative ml-3">
           <div>

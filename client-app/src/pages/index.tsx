@@ -86,7 +86,7 @@ const Home: NextPage = ({ connectedAccount }: any) => {
   );
 
   return (
-    <div className="flex flex-col w-full h-screen sm:flex-row sm:justify-evenly">
+    <div className="flex h-screen sm:flex-row sm:justify-center">
       <Head>
         <title>EthTrust wallet controller</title>
         <meta name="description" content="EthTrust wallet controller" />

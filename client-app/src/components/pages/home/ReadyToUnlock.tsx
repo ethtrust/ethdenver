@@ -36,7 +36,7 @@ export const ReadyToUnlock = ({ handleClick, isOn }: ReadyToUnlockProps) => {
 
   return (
     <div className="bg-indigo-800 rounded-xl flex flex-col justify-center items-center">
-      <div className="flex-1 max-w-7xl py-2 px-4 sm:py-12 sm:px-6 lg:px-8">
+      <div className="flex-1 py-2 px-4 sm:py-12 sm:px-6 lg:px-8">
         <div className="text-center">
           <p className="mt-1 text-4xl font-normal text-white sm:text-5xl sm:tracking-tight lg:text-6xl">
             {isOn
