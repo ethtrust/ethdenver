@@ -2,6 +2,7 @@ import { useState } from "react";
 import { GlowButton } from "../../common/GlowButton";
 import { useActiveWeb3React } from "../../../hooks";
 import { handleUnlock, getStatus } from "../../../functions/backend";
+import { useSpinner } from "../../common/Spinner/SpinnerContext";
 
 export interface ReadyToUnlockProps {
   isOn?: boolean;
@@ -9,6 +10,7 @@ export interface ReadyToUnlockProps {
 }
 
 export const ReadyToUnlock = ({ handleClick }: ReadyToUnlockProps) => {
+  const { showSpinner, hideSpinner } = useSpinner();
   const { chainId, account, connector } = useActiveWeb3React();
   const [isOn, setIsOn] = useState(false);
 
@@ -18,6 +20,12 @@ export const ReadyToUnlock = ({ handleClick }: ReadyToUnlockProps) => {
       console.log("RES =>", res);
       isOn !== res && setIsOn(res);
     }, 6000);
+  };
+
+  const onActivateClick = async () => {
+    showSpinner(true);
+    await handleUnlock({ isOn, afterUnlock, account });
+    hideSpinner();
   };
 
   return (
@@ -32,9 +40,7 @@ export const ReadyToUnlock = ({ handleClick }: ReadyToUnlockProps) => {
         </div>
       </div>
       <div className="justify-center items-center mb-auto mx-auto">
-        <GlowButton
-          onClick={() => handleUnlock({ isOn, afterUnlock, account })}
-        >
+        <GlowButton onClick={onActivateClick}>
           {isOn ? "Deactivate" : "Activate"} wallet
         </GlowButton>
       </div>
