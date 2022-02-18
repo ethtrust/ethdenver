@@ -86,15 +86,15 @@ const Home: NextPage = ({ connectedAccount }: any) => {
   );
 
   return (
-    <div className="flex h-screen sm:flex-row sm:justify-center">
+    <div className="flex justify-center">
       <Head>
         <title>EthTrust wallet controller</title>
         <meta name="description" content="EthTrust wallet controller" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="mt-8">
-        <div className="order-2 sm:order-1">
+      <main className="mt-2">
+        <div className="max-w-2xl sm:flex-row sm:justify-center order-2 sm:order-1">
           {/* {isOn ? "ON" : "OFF"} */}
           {account ? (
             <ReadyToUnlock handleClick={handleUnlock} isOn={isOn} />
