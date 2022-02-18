@@ -59,27 +59,27 @@ export const Navbar = (props: Props) => {
         <>
           <div className="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="relative flex items-center justify-between h-16">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center p-2 text-gray-400 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+              {/* <div className="absolute inset-y-0 left-0 flex items-center sm:hidden"> */}
+              {/* Mobile menu button*/}
+              {/* <Disclosure.Button className="inline-flex items-center justify-center p-2 text-gray-400 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XIcon className="block w-6 h-6" aria-hidden="true" />
                   ) : (
                     <MenuIcon className="block w-6 h-6" aria-hidden="true" />
                   )}
-                </Disclosure.Button>
-              </div>
-              <div className="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
-                <div className="flex items-center flex-shrink-0">
-                  <Link href="/" passHref>
-                    <LogoOnDark className="w-48 h-48 cursor-pointer lg:block" />
-                  </Link>
-                  <Link href="/" passHref>
-                    <LogoOnDark className="hidden w-8 h-8 cursor-pointer lg:hidden" />
-                  </Link>
-                </div>
-                {/* <div className="hidden sm:block sm:ml-12">
+                </Disclosure.Button> */}
+              {/* </div> */}
+              {/* <div className="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start"> */}
+              {/* <div className="flex items-center flex-shrink-0"> */}
+              <Link href="/" passHref>
+                <LogoOnDark className="w-48 h-48 cursor-pointer lg:block" />
+              </Link>
+              <Link href="/" passHref>
+                <LogoOnDark className="hidden w-8 h-8 cursor-pointer lg:hidden" />
+              </Link>
+              {/* </div> */}
+              {/* <div className="hidden sm:block sm:ml-12">
                   <div className="flex space-x-12">
                     {navigation.map((item) => {
                       return (
@@ -92,7 +92,7 @@ export const Navbar = (props: Props) => {
                     })}
                   </div>
                 </div> */}
-              </div>
+              {/* </div> */}
               <ConnectWalletButton />
             </div>
           </div>

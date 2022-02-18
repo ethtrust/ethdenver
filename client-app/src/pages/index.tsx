@@ -52,13 +52,17 @@ const Home: NextPage = ({ connectedAccount }: any) => {
   useContractEvent("OnIntent", handleOnIntent);
   useContractEvent("ConfirmOn", handleConfirmOn);
 
-  useEffect(() => {
+  const checkAndSetOnStatus = (provider: any) => {
     try {
-      getStatus({ provider });
+      getStatus({ provider }).then((contractOnStatus: any) => {
+        console.log("contractOnStatus", contractOnStatus);
+        setIsOn(contractOnStatus);
+      });
     } catch (e) {
       console.error(`Error`, e);
     }
-  }, [provider]);
+  };
+  useEffect(() => checkAndSetOnStatus(provider), [provider]);
 
   // const handleUnlock = () => {
   //   setTimeout(async () => await getStatus(), 2000);
@@ -83,7 +87,7 @@ const Home: NextPage = ({ connectedAccount }: any) => {
   );
 
   return (
-    <div className="flex flex-col justify-center w-full h-screen sm:flex-row sm:justify-evenly">
+    <div className="flex flex-col w-full h-screen sm:flex-row sm:justify-evenly">
       <Head>
         <title>EthTrust wallet controller</title>
         <meta name="description" content="EthTrust wallet controller" />

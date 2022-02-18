@@ -13,7 +13,7 @@ export interface HandleUnlockOptions {
 export const getStatus = async ({ provider }: { provider: any }) => {
   try {
     const contract = contractWeb3Connection(contractName, provider.getSigner());
-    return contract.isOn();
+    return await contract.isOn();
   } catch (e) {
     // TODO: the server is down
     return false;
