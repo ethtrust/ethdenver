@@ -25,7 +25,13 @@ export const ReadyToUnlock = ({ handleClick, isOn }: ReadyToUnlockProps) => {
 
   const onActivateClick = async () => {
     showSpinner(true);
-    await handleUnlock({ isOn, account, provider });
+    try {
+      await handleUnlock({ isOn, account, provider });
+    } catch (e) {
+      console.log("Error in handleUnlock");
+
+      hideSpinner();
+    }
   };
 
   return (

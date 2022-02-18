@@ -32,7 +32,6 @@ const Home: NextPage = ({ connectedAccount }: any) => {
     hideSpinner();
     setLoading(false);
     setIsOn(false);
-    console.log("Confirm off", isOn);
   };
 
   const handleOnIntent = (data: any) => {

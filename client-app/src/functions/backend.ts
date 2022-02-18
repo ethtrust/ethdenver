@@ -26,7 +26,6 @@ export const handleUnlock = async ({
   provider,
 }: // afterUnlock,
 HandleUnlockOptions) => {
-  const poeState = isOn ? "OFF" : "ON";
   if (!account) {
     return;
   }
@@ -39,13 +38,13 @@ HandleUnlockOptions) => {
 
     let resp;
     if (isOn) {
-      resp = await contract.toggleOn();
-    } else {
       resp = await contract.toggleOff();
+    } else {
+      resp = await contract.toggleOn();
     }
-    console.log("resp", resp);
   } catch (e) {
-    console.log(`Error on POST`, e);
+    // Rejected transaction
+    throw new Error(`User rejected transaction`);
   } finally {
     // afterUnlock ? afterUnlock() : setTimeout(getStatus, 5000);
   }
