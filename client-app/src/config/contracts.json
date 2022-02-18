@@ -22,7 +22,7 @@
                   "type": "address"
                 }
               ],
-              "name": "ToggleOff",
+              "name": "ConfirmOff",
               "type": "event"
             },
             {
@@ -35,8 +35,48 @@
                   "type": "address"
                 }
               ],
-              "name": "ToggleOn",
+              "name": "ConfirmOn",
               "type": "event"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": true,
+                  "internalType": "address",
+                  "name": "_from",
+                  "type": "address"
+                }
+              ],
+              "name": "OffIntent",
+              "type": "event"
+            },
+            {
+              "anonymous": false,
+              "inputs": [
+                {
+                  "indexed": true,
+                  "internalType": "address",
+                  "name": "_from",
+                  "type": "address"
+                }
+              ],
+              "name": "OnIntent",
+              "type": "event"
+            },
+            {
+              "inputs": [],
+              "name": "confirmOff",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "confirmOn",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
             },
             {
               "inputs": [],
@@ -52,14 +92,8 @@
               "type": "function"
             },
             {
-              "inputs": [
-                {
-                  "internalType": "address",
-                  "name": "",
-                  "type": "address"
-                }
-              ],
-              "name": "lightEmUp",
+              "inputs": [],
+              "name": "isOn",
               "outputs": [
                 {
                   "internalType": "bool",

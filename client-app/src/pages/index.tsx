@@ -6,7 +6,7 @@ import Image from "next/image";
 import Lottie from "react-lottie";
 import { useSpinner } from "../components/common/Spinner/SpinnerContext";
 import { GlowButton } from "../components/common/GlowButton";
-import { useActiveWeb3React } from "../hooks";
+import { useActiveWeb3React, useContractEvent } from "../hooks";
 import { ConnectWalletButton } from "../components/blockchain/ConnectWalletButton";
 import { NotConnected, ReadyToUnlock } from "../components/pages/home";
 import { getStatus, handleUnlock } from "../functions/backend";
@@ -15,6 +15,25 @@ const Home: NextPage = ({ connectedAccount }: any) => {
   const { showSpinner, hideSpinner } = useSpinner();
   const [isOn, setIsOn] = useState(false);
   const { chainId, account, connector } = useActiveWeb3React();
+
+  const handleOffIntent = (err: Error | null, data: any) => {
+    console.log("Off intent");
+  };
+  const handleConfirmOff = (err: Error | null, data: any) => {
+    console.log("ConfirmOff");
+  };
+
+  const handleOnIntent = (err: Error | null, data: any) => {
+    console.log("On intent");
+  };
+  const handleConfirmOn = (err: Error | null, data: any) => {
+    console.log("ConfirmOn");
+  };
+
+  useContractEvent("OffIntent", handleOffIntent);
+  useContractEvent("ConfirmOff", handleConfirmOff);
+  useContractEvent("OnIntent", handleOnIntent);
+  useContractEvent("ConfirmOn", handleConfirmOn);
 
   useEffect(() => {
     try {

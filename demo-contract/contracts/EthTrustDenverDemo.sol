@@ -5,11 +5,12 @@ import "hardhat/console.sol";
 
 contract EthTrustDenverDemo {
     address public owner;
-    mapping(address => bool) public lightEmUp;
+    bool public isOn;
 
-    event ToggleOn(address indexed _from);
-
-    event ToggleOff(address indexed _from);
+    event OnIntent(address indexed _from);
+    event ConfirmOn(address indexed _from);
+    event OffIntent(address indexed _from);
+    event ConfirmOff(address indexed _from);
 
     constructor() {
         owner = msg.sender;
@@ -17,17 +18,27 @@ contract EthTrustDenverDemo {
 
     function toggleOff() public {
         // require(lightEmUp[msg.sender] == true);
-        lightEmUp[msg.sender] = false;
-        emit ToggleOff(msg.sender);
+        // lightEmUp[msg.sender] = false;
+        emit OffIntent(msg.sender);
+    }
+
+    function confirmOff() public {
+        isOn = false;
+        emit ConfirmOff(msg.sender);
     }
 
     function toggleOn() public {
         // require(lightEmUp[msg.sender] == false);
-        lightEmUp[msg.sender] = true;
-        emit ToggleOn(msg.sender);
+        // lightEmUp[msg.sender] = true;
+        emit OnIntent(msg.sender);
+    }
+
+    function confirmOn() public {
+        isOn = true;
+        emit ConfirmOn(msg.sender);
     }
 
     function getLightState() public view returns (bool) {
-        return lightEmUp[msg.sender];
+        return isOn;
     }
 }

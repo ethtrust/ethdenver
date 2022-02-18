@@ -1,5 +1,3 @@
-import contractJsonReq from "../config/contracts.json";
-
 export function merge(str1: string, str2: string) {
   var arr1 = str1.split("");
   var arr2 = str2.split("");
@@ -18,5 +16,3 @@ export function merge(str1: string, str2: string) {
   }
   return result;
 }
-
-export const contractJson = contractJsonReq;

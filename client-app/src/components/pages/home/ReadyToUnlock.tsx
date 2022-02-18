@@ -15,8 +15,8 @@ export const ReadyToUnlock = ({ handleClick }: ReadyToUnlockProps) => {
   const afterUnlock = async () => {
     setTimeout(async () => {
       const res = await getStatus();
-      console.log("RES", res);
-      setIsOn(!isOn);
+      console.log("RES =>", res);
+      isOn !== res && setIsOn(res);
     }, 6000);
   };
 
