@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback, createContext, FC } from "react";
 import { ethers, Wallet } from "ethers";
-import { Bridge } from "arb-ts";
 import Web3Modal from "web3modal";
 import { Web3ReactProvider } from "@web3-react/core";
 import dynamic from "next/dynamic";
