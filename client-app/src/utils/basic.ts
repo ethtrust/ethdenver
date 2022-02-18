@@ -1,6 +1,19 @@
+import cheerio from "cheerio";
+import md5 from "md5";
 import { ethers } from "ethers";
+import { merge } from "lodash-es";
 
 import { abis } from "../contracts";
+
+// Parse the GET Login Response DOM, extract the hidden salt field,
+// combine with the PW string per the JS, and calc the hash.
+export function calculatePWHash(loginDom: any) {
+  const cheerioLogin = cheerio.load(loginDom);
+  var pwSalt = cheerioLogin("#rand").attr("value");
+  var pwStr = "Netgearshot1!";
+  var pwHash = md5(merge(pwStr, pwSalt));
+  return pwHash;
+}
 
 export async function getAllowance(
   provider: any,

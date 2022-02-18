@@ -1,6 +1,6 @@
 export interface HandleUnlockOptions {
   isOn: boolean;
-  account?: string;
+  account?: string | null;
   afterUnlock?: () => void;
 }
 export const getStatus = async () => {

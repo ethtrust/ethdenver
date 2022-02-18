@@ -25,7 +25,8 @@ export const ReadyToUnlock = ({ handleClick }: ReadyToUnlockProps) => {
   const onActivateClick = async () => {
     showSpinner(true);
     await handleUnlock({ isOn, afterUnlock, account });
-    hideSpinner();
+    // TODO: GROSS
+    setTimeout(() => hideSpinner(), 2000);
   };
 
   return (

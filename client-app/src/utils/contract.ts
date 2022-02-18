@@ -10,7 +10,9 @@ export const contractWeb3Connection = (
   contractName: string,
   chainId: string = "31337"
 ) => {
-  const contractDetails = contractJson[chainId][0]["contracts"][contractName];
+  const contractDetails = (contractJson as any)[chainId][0]["contracts"][
+    contractName
+  ];
   const contractAddress = contractDetails.address;
   const contractABI = contractDetails.abi;
 

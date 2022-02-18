@@ -5,9 +5,9 @@ import { calculatePWHash } from ".";
 const routerHostname = process.env.ROUTER_IP || "192.168.0.222";
 
 export interface APIState {
-  pwHash: string;
-  sessionCookie: string;
-  hash: string;
+  pwHash?: string;
+  sessionCookie?: string;
+  hash?: string;
   poePortOneStatus: any | null;
 }
 
@@ -31,7 +31,7 @@ class StatefulRouter {
     return axios.get("http://" + routerHostname + "/login.cgi");
   }
 
-  handleGetLogin(getLoginResponse) {
+  handleGetLogin(getLoginResponse: any) {
     if (!getLoginResponse.data || getLoginResponse.data.length === 0) {
       return Promise.reject(
         new Error("Encountered an Error Retrieving Login Page. Stopping.")
@@ -42,14 +42,14 @@ class StatefulRouter {
     }
   }
 
-  postLogin(newApiState) {
+  postLogin(newApiState: any) {
     return axios.post(
       "http://" + routerHostname + "/login.cgi",
       "password=" + newApiState.pwHash
     );
   }
 
-  handlePostLogin(postLoginResponse, apiState) {
+  handlePostLogin(postLoginResponse: any) {
     const tempSID = postLoginResponse.headers["set-cookie"][0].split(";")[0];
     if (tempSID.includes("SID=")) {
       this.apiState.sessionCookie = tempSID;
@@ -61,7 +61,7 @@ class StatefulRouter {
     }
   }
 
-  getPoEPortConfig(apiState) {
+  getPoEPortConfig(apiState: any) {
     return axios.get("http://" + routerHostname + "/PoEPortConfig.cgi", {
       headers: {
         Cookie: apiState.sessionCookie,
@@ -69,19 +69,27 @@ class StatefulRouter {
     });
   }
 
-  handleGetPoEPortConfig(getPoEPortConfigResponse) {
-    if (checkForRedirect(getPoEPortConfigResponse.data)) {
+  handleGetPoEPortConfig(getPoEPortConfigResponse: any) {
+    if (this.checkForRedirect(getPoEPortConfigResponse.data)) {
       // Promise.reject(new Error("Session Invalid - Redirected to Login"));
       console.log("FIX ME");
     } else {
-      let portStatusResp = retrievePoEPortState(getPoEPortConfigResponse.data);
+      let portStatusResp = this.retrievePoEPortState(
+        getPoEPortConfigResponse.data
+      );
       this.apiState.hash = portStatusResp.hash;
       this.apiState.poePortOneStatus = portStatusResp.poePortOneStatus;
       return this.apiState;
     }
   }
 
-  postPoEPortConfig(powerMode) {
+  postPoEPortConfig(powerMode: any) {
+    const opts = {
+      headers: {},
+    };
+    if (this.apiState.sessionCookie) {
+      (opts.headers as any).Cookie = this.apiState.sessionCookie;
+    }
     return axios.post(
       "http://" + routerHostname + "/PoEPortConfig.cgi",
       "hash=" +
@@ -95,15 +103,11 @@ class StatefulRouter {
         "&POW_LIMT_TYP=2" +
         "&POW_LIMT=30.0" +
         "&DETEC_TYP=2",
-      {
-        headers: {
-          Cookie: this.apiState.sessionCookie,
-        },
-      }
+      opts
     );
   }
 
-  handlePostPoEPortConfig(postPoEPortConfigResponse) {
+  handlePostPoEPortConfig(postPoEPortConfigResponse: any) {
     if (postPoEPortConfigResponse.status != 200) {
       Promise.reject(new Error("Failed to Toggle PoE"));
     } else {
@@ -119,7 +123,7 @@ class StatefulRouter {
     });
   }
 
-  retrievePoEPortState(poeDOM) {
+  retrievePoEPortState(poeDOM: any) {
     const cheerioPoEStatus = cheerio.load(poeDOM);
     const poePortOneStatus = cheerioPoEStatus(
       "[name=isShowPot1] #hidPortPwr"
@@ -128,7 +132,7 @@ class StatefulRouter {
     return { hash, poePortOneStatus };
   }
 
-  checkForRedirect(poeDOM) {
+  checkForRedirect(poeDOM: any) {
     const cheerioPoEStatus = cheerio.load(poeDOM);
     var titleStr = cheerioPoEStatus("title").text();
     if (titleStr == "Redirect to Login") {
