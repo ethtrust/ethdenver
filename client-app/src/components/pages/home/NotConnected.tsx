@@ -1,5 +1,3 @@
-import { ConnectWalletButton } from "../../blockchain/ConnectWalletButton";
-
 import { useActiveWeb3React } from "../../../hooks";
 
 export interface NotConnectedProps {}
