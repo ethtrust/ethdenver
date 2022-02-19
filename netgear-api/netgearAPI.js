@@ -1,9 +1,9 @@
 require("dotenv").config();
 const axios = require("axios");
 const cheerio = require("cheerio");
-var express = require("express");
+const express = require("express");
 const cors = require("cors");
-var md5 = require("md5");
+const md5 = require("md5");
 
 var poeAPI = express();
 poeAPI.use(cors());
@@ -72,14 +72,15 @@ function getPoEPortConfig() {
   return axios.get("http://" + routerHostname + "/PoEPortConfig.cgi", {
     headers: {
       Cookie: apiState.sessionCookie,
-    },
+    }
   });
 }
 
 function handleGetPoEPortConfig(getPoEPortConfigResponse) {
   if (checkForRedirect(getPoEPortConfigResponse.data)) {
-    // Promise.reject(new Error("Session Invalid - Redirected to Login"));
-    console.log("FIX ME");
+    console.log("Handling Redirect - Session Cookie Cleared");
+    apiState.sessionCookie = "";
+    Promise.reject(new Error("LoginRedirect"));
   } else {
     let portStatusResp = retrievePoEPortState(getPoEPortConfigResponse.data);
     apiState.hash = portStatusResp.hash;
@@ -170,16 +171,23 @@ poeAPI.get("/on", function (req, res) {
       .then((postPoEPortConfigResp) =>
         handlePostPoEPortConfig(postPoEPortConfigResp)
       )
+      .then(() => res.json({success: true, currentPoEState: apiState.poePortOneStatus }))
       // Print State Obj for Debug
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
       .catch((error) => {
-        res.sendStatus(500);
-        console.log(error);
-        // process.exit(1);
-      })
-      .then(() => res.json({ success: true, currentPoEState: "1" }));
+        console.log(error.message);
+        if(error.message == "LoginRedirect") {
+          res.sendStatus(205);
+        } else if (error.code === "ECONNRESET") {
+          console.log("Handle Connection Reset");
+          res.sendStatus(205);
+        } else {
+          res.sendStatus(500);
+          console.log(error);
+        }
+      });
   } else {
     console.log("Session Cookie Stored");
     getPoEPortConfig()
@@ -190,16 +198,23 @@ poeAPI.get("/on", function (req, res) {
       .then((postPoEPortConfigResp) =>
         handlePostPoEPortConfig(postPoEPortConfigResp)
       )
+      .then(() => res.json({success: true, currentPoEState: apiState.poePortOneStatus}))
       // Print State Obj for Debug
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
       .catch((error) => {
-        res.sendStatus(500);
-        console.log(error);
-        // process.exit(1);
-      })
-      .then(() => res.json({ success: true, currentPoEState: "1" }));
+        console.log(error.message);
+        if(error.message == "LoginRedirect") {
+          res.sendStatus(205);
+        } else if (error.code === "ECONNRESET") {
+          console.log("Handle Connection Reset");
+          res.sendStatus(205);
+        } else {
+          res.sendStatus(500);
+          console.log(error);
+        }
+      });
   }
 });
 
@@ -218,16 +233,23 @@ poeAPI.get("/off", function (req, res) {
       .then((postPoEPortConfigResp) =>
         handlePostPoEPortConfig(postPoEPortConfigResp)
       )
+      .then(() => res.json({success: true, currentPoEState: apiState.poePortOneStatus}))
       // Print State Obj for Debug
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
       .catch((error) => {
-        res.sendStatus(500);
-        console.log(error);
-        process.exit(1);
-      })
-      .then(() => res.json({ success: true, currentPoEState: "0" }));
+        console.log(error.message);
+        if(error.message == "LoginRedirect") {
+          res.sendStatus(205);
+        } else if (error.code === "ECONNRESET") {
+          console.log("Handle Connection Reset");
+          res.sendStatus(205);
+        } else {
+          res.sendStatus(500);
+          console.log(error);
+        }
+      });
   } else {
     console.log("Session Cookie Stored");
     getPoEPortConfig()
@@ -238,16 +260,23 @@ poeAPI.get("/off", function (req, res) {
       .then((postPoEPortConfigResp) =>
         handlePostPoEPortConfig(postPoEPortConfigResp)
       )
+      .then(() => res.json({success: true, currentPoEState: apiState.poePortOneStatus}))
       // Print State Obj for Debug
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
       .catch((error) => {
-        res.sendStatus(500);
-        console.log(error);
-        process.exit(1);
-      })
-      .then(() => res.json({ success: true, currentPoEState: "0" }));
+        console.log(error.message);
+        if(error.message == "LoginRedirect") {
+          res.sendStatus(205);
+        } else if (error.code === "ECONNRESET") {
+          console.log("Handle Connection Reset");
+          res.sendStatus(205);
+        } else {
+          res.sendStatus(500);
+          console.log(error);
+        }
+      });
   }
 });
 
@@ -262,32 +291,46 @@ poeAPI.get("/status", function (req, res) {
       .then((getPoEPortConfigResp) =>
         handleGetPoEPortConfig(getPoEPortConfigResp)
       )
+      .then(() => res.json({ currentPoEState: apiState.poePortOneStatus }))
       // Print State Obj for Debug
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
       .catch((error) => {
-        res.sendStatus(500);
-        console.log(error);
-        process.exit(1);
-      })
-      .then(() => res.json({ currentPoEState: apiState.poePortOneStatus }));
+        console.log(error.message);
+        if(error.message == "LoginRedirect") {
+          res.sendStatus(205);
+        } else if (error.code === "ECONNRESET") {
+          console.log("Handle Connection Reset");
+          res.sendStatus(205);
+        } else {
+          res.sendStatus(500);
+          console.log(error);
+        }
+      });
   } else {
     console.log("Session Cookie Stored");
     getPoEPortConfig()
       .then((getPoEPortConfigResp) =>
         handleGetPoEPortConfig(getPoEPortConfigResp)
       )
+      .then(() => res.json({ currentPoEState: apiState.poePortOneStatus }))
       // Print State Obj for Debug
       // .then(localState => console.log(localState))
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
       .catch((error) => {
-        res.sendStatus(500);
-        console.log(error);
-        process.exit(1);
-      })
-      .then(() => res.json({ currentPoEState: apiState.poePortOneStatus }));
+        console.log(error.message);
+        if(error.message == "LoginRedirect") {
+          res.sendStatus(205);
+        } else if (error.code === "ECONNRESET") {
+          console.log("Handle Connection Reset");
+          res.sendStatus(205);
+        } else {
+          res.sendStatus(500);
+          console.log(error);
+        }
+      });
   }
 });
 

@@ -9,9 +9,11 @@ const compileOutputJson = JSON.parse(
   fs.readFileSync(path.join(__dirname, "config", `output.json`), "utf-8")
 );
 
+const web3ProviderURL = process.env.WEB3_PROVIDER_URL || listenerConfig.web3ProviderURL;
+const web3 = new Web3(web3ProviderURL);
+
 const poeAPIURL = process.env.POE_API_URL || listenerConfig.poeAPIURL;
 const poeAPIPort = process.env.POE_API_PORT || listenerConfig.poeAPIPort;
-const web3ProviderURL = process.env.WEB3_PROVIDER_URL || listenerConfig.web3ProviderURL;
 const chainIdCfg = process.env.CHAIN_ID || listenerConfig.chainId;
 
 const contractName = process.env.CONTRACT_NAME;
@@ -19,8 +21,9 @@ const contractDetails = compileOutputJson[chainIdCfg][0]["contracts"][contractNa
 const contractAddress = contractDetails.address;
 const contractABI = contractDetails.abi;
 
+const lightEmUpContract = new web3.eth.Contract(contractABI, contractAddress);
+
 console.log("Connecting to " + web3ProviderURL);
-const web3 = new Web3(web3ProviderURL);
 web3.eth.net
   .getId()
   .then((chainId) => {
@@ -37,42 +40,80 @@ web3.eth.net
     process.exit(1);
   });
 
-async function listenForEvents() {
-  // Grab the Web3 Instance of the Contract
-  const lightEmUpContract = new web3.eth.Contract(contractABI, contractAddress);
+function signTx(contractMethodName) {
+  console.log(web3.utils.sha3(contractMethodName).slice(0,10));
+  return web3.eth.accounts.signTransaction({
+    to: contractAddress,
+    gas: 2000000,
+    data: web3.utils.sha3(contractMethodName).slice(0,10)
+  }, process.env.PRIVATE_KEY)
+}
 
+async function sendTx(contractMethodName) {
+  const txOutput = await signTx(contractMethodName);
+  console.log(txOutput);
+  return await web3.eth.sendSignedTransaction(txOutput.rawTransaction);
+}
+
+
+function turnOn() {
+  return axios.get("http://" + poeAPIURL + ":" + poeAPIPort + "/on")
+}
+
+function turnOff() {
+  return axios.get("http://" + poeAPIURL + ":" + poeAPIPort + "/off")
+}
+
+async function handleToggleOn(toggleResponse) {
+  console.log(toggleResponse.status);
+  if(toggleResponse && toggleResponse.status === 200 && toggleResponse.data) {
+    console.log(toggleResponse.data);
+    const sendTxResp = await sendTx("confirmOn()");
+    return;
+  } else if (toggleResponse.status === 205) {
+    console.log("Connection reset, or redirected to login. Retrying Request.");
+    return turnOn();
+  } else {
+    console.log("An unexpected error occured.\n", toggleResponse);
+  }
+}
+
+async function handleToggleOff(toggleResponse) {
+  console.log(toggleResponse.status);
+  if(toggleResponse && toggleResponse.status === 200 && toggleResponse.data) {
+    console.log(toggleResponse.data);
+    const sendTxResp = await sendTx("confirmOff()");
+    return;
+  } else if (toggleResponse.status === 205) {
+    console.log("Connection reset, or redirected to login. Retrying Request.");
+    return turnOff();
+  } else {
+    console.log("An unexpected error occured.\n", toggleResponse);
+  }
+}
+
+async function listenForEvents() {
   // Handle the Toggle On Event
   //   Catch the event and invoke a REST call to toggle the POE on.
   lightEmUpContract.events
     .OnIntent()
     .on("data", (event) => {
       console.log("On Intent Caught");
-      axios
-        .get("http://" + poeAPIURL + ":" + poeAPIPort + "/on")
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      turnOn()
+      .then((toggleResponse) => handleToggleOn(toggleResponse))
+      .catch((error) => console.log("An Error Occured: \n" + error));
     })
     .on("error", console.error);
 
   // Handle the Toggle Off Event
   //   Catch the event and invoke a REST call to toggle the POE off.
   lightEmUpContract.events
-    .OffIntent()
-    .on("data", (event) => {
-      console.log("Off Intent Caught");
-      axios
-        .get("http://" + poeAPIURL + ":" + poeAPIPort + "/off")
-        .then((response) => {
-          console.log(response);
-          // console.log("RESPONDED SUCCESSFULLY");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    })
-    .on("error", console.error);
+  .OffIntent()
+  .on("data", (event) => {
+    console.log("Off Intent Caught");
+    turnOff()
+    .then((toggleResponse) => handleToggleOff(toggleResponse))
+    .catch((error) => console.log("An Error Occured: \n" + error));
+  })
+  .on("error", console.error);
 }
