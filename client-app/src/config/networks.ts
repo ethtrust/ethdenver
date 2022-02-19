@@ -11,6 +11,7 @@ export const DEFAULT_METAMASK_CHAIN_ID = [
   ChainId.MAINNET,
   ChainId.RINKEBY,
   ChainId.HARDHAT,
+  ChainId.ARBITRUM_TESTNET,
 ];
 
 export const NETWORK_ICON = {
@@ -22,8 +23,8 @@ export const NETWORK_ICON = {
 };
 
 export const AVAILABLE_NETWORKS: number[] = [
-  ChainId.MAINNET,
-  ChainId.ROPSTEN,
+  // ChainId.MAINNET,
+  // ChainId.ROPSTEN,
   // ChainId.MATIC,
   // ChainId.FANTOM,
   ChainId.ARBITRUM,
@@ -42,39 +43,39 @@ export const SUPPORTED_NETWORKS: {
     blockExplorerUrls: string[];
   };
 } = {
-  [ChainId.MAINNET]: {
-    chainId: "0x1",
-    chainName: "Ethereum",
-    nativeCurrency: {
-      name: "Ethereum",
-      symbol: "ETH",
-      decimals: 18,
-    },
-    rpcUrls: ["https://mainnet.infura.io/v3"],
-    blockExplorerUrls: ["https://etherscan.com"],
-  },
-  [ChainId.RINKEBY]: {
-    chainId: "0x4",
-    chainName: "Rinkeby",
-    nativeCurrency: {
-      name: "Ethereum",
-      symbol: "ETH",
-      decimals: 18,
-    },
-    rpcUrls: ["https://rinkeby.infura.io/v3"],
-    blockExplorerUrls: ["https://rinkeby.etherscan.com"],
-  },
-  [ChainId.ROPSTEN]: {
-    chainId: "0x3",
-    chainName: "Ropsten",
-    nativeCurrency: {
-      name: "Ethereum",
-      symbol: "ETH",
-      decimals: 18,
-    },
-    rpcUrls: ["https://ropsten.infura.io/v3"],
-    blockExplorerUrls: ["https://ropsten.etherscan.com"],
-  },
+  // [ChainId.MAINNET]: {
+  //   chainId: "0x1",
+  //   chainName: "Ethereum",
+  //   nativeCurrency: {
+  //     name: "Ethereum",
+  //     symbol: "ETH",
+  //     decimals: 18,
+  //   },
+  //   rpcUrls: ["https://mainnet.infura.io/v3"],
+  //   blockExplorerUrls: ["https://etherscan.com"],
+  // },
+  // [ChainId.RINKEBY]: {
+  //   chainId: "0x4",
+  //   chainName: "Rinkeby",
+  //   nativeCurrency: {
+  //     name: "Ethereum",
+  //     symbol: "ETH",
+  //     decimals: 18,
+  //   },
+  //   rpcUrls: ["https://rinkeby.infura.io/v3"],
+  //   blockExplorerUrls: ["https://rinkeby.etherscan.com"],
+  // },
+  // [ChainId.ROPSTEN]: {
+  //   chainId: "0x3",
+  //   chainName: "Ropsten",
+  //   nativeCurrency: {
+  //     name: "Ethereum",
+  //     symbol: "ETH",
+  //     decimals: 18,
+  //   },
+  //   rpcUrls: ["https://ropsten.infura.io/v3"],
+  //   blockExplorerUrls: ["https://ropsten.etherscan.com"],
+  // },
   [ChainId.ARBITRUM]: {
     chainId: "0xA4B1",
     chainName: "Arbitrum",

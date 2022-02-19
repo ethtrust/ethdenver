@@ -12,6 +12,8 @@ interface CustomProps {
   disconnect: () => Promise<void>;
 }
 
+const supportedChainId = process.env.NEXT_PUBLIC_CHAIN_ID;
+
 export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> &
   CustomProps {
   const context = useWeb3ReactCore<Web3Provider & CustomProps>();
@@ -69,7 +71,11 @@ export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> &
       const provider = new ethers.providers.Web3Provider(connection);
       // const chainId = provider.network.chainId;
       await context.activate(injected);
-      if (context.error && context.error.name === "UnsupportedChainIdError") {
+
+      if (
+        (provider && provider.network.chainId !== supportedChainId) ||
+        (context.error && context.error.name === "UnsupportedChainIdError")
+      ) {
         await switchNetwork(provider);
       }
     } catch (error) {
