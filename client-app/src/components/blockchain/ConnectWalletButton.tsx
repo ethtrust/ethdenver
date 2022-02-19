@@ -4,11 +4,18 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import WalletSvg from "../svg/WalletSvg";
 import { useActiveWeb3React } from "../../hooks";
 import { getEllipsisTxt } from "../../utils";
+import { ConnectOrOpen } from "../common/ConnectOrOpenLink";
 
 export const ConnectWalletButton = (props: any) => {
   const context = useActiveWeb3React();
-  const { chainId, account, connector, connectWallet, deactivate } =
-    context as any;
+  const {
+    web3enabled,
+    chainId,
+    account,
+    connector,
+    connectWallet,
+    deactivate,
+  } = context as any;
 
   const disconnect = async () => {
     try {
@@ -57,12 +64,10 @@ export const ConnectWalletButton = (props: any) => {
           </Transition>
         </Menu>
       ) : (
-        <button
+        <ConnectOrOpen
           onClick={() => connectWallet(true)}
           className="px-4 py-2 font-semibold transition border-2 rounded-full shadow-lg hover:border-primary hover:text-primary hover:shadow-primary/30 border-primary/80 text-primary/90 shadow-primary/10"
-        >
-          Connect Wallet
-        </button>
+        />
       )}
     </div>
   );

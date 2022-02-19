@@ -7,6 +7,7 @@ import { useWeb3React as useWeb3ReactCore } from "@web3-react/core";
 import { injected } from "../config/wallets";
 
 interface CustomProps {
+  web3enabled: boolean;
   chainId?: ChainId;
   connectWallet: () => Promise<void>;
   disconnect: () => Promise<void>;
@@ -92,6 +93,8 @@ export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> &
     await context.deactivate();
   };
 
+  const web3enabled = !!window.ethereum;
+
   // replace with address to impersonate
   const impersonate = false;
 
@@ -99,11 +102,13 @@ export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> &
     ? {
         ...context,
         connectWallet,
+        web3enabled,
         disconnect,
         account: impersonate || context.account,
       }
     : {
         ...contextNetwork,
+        web3enabled,
         connectWallet,
         disconnect,
         account: impersonate || contextNetwork.account,
