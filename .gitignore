@@ -1,5 +1,5 @@
 *.code-workspace
-
+.DS_Store
 client-app/dist
 .env
 node_modules

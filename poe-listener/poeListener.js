@@ -55,6 +55,17 @@ async function sendTx(contractMethodName) {
   return await web3.eth.sendSignedTransaction(txOutput.rawTransaction);
 }
 
+function handleOnEvent() {
+  turnOn()
+  .then((toggleResponse) => handleToggleOn(toggleResponse))
+  .catch((error) => console.log("An Error Occurred: \n" + error));
+}
+
+function handleOffEvent() {
+  turnOff()
+  .then((toggleResponse) => handleToggleOff(toggleResponse))
+  .catch((error) => console.log("An Error Occurred: \n" + error));
+}
 
 function turnOn() {
   return axios.get("http://" + poeAPIURL + ":" + poeAPIPort + "/on")
@@ -72,7 +83,7 @@ async function handleToggleOn(toggleResponse) {
     return;
   } else if (toggleResponse.status === 205) {
     console.log("Connection reset, or redirected to login. Retrying Request.");
-    return turnOn();
+    return handleOnEvent();
   } else {
     console.log("An unexpected error occured.\n", toggleResponse);
   }
@@ -86,7 +97,7 @@ async function handleToggleOff(toggleResponse) {
     return;
   } else if (toggleResponse.status === 205) {
     console.log("Connection reset, or redirected to login. Retrying Request.");
-    return turnOff();
+    return handleOffEvent();
   } else {
     console.log("An unexpected error occured.\n", toggleResponse);
   }
@@ -99,9 +110,7 @@ async function listenForEvents() {
     .OnIntent()
     .on("data", (event) => {
       console.log("On Intent Caught");
-      turnOn()
-      .then((toggleResponse) => handleToggleOn(toggleResponse))
-      .catch((error) => console.log("An Error Occured: \n" + error));
+      handleOnEvent();
     })
     .on("error", console.error);
 
@@ -111,9 +120,7 @@ async function listenForEvents() {
   .OffIntent()
   .on("data", (event) => {
     console.log("Off Intent Caught");
-    turnOff()
-    .then((toggleResponse) => handleToggleOff(toggleResponse))
-    .catch((error) => console.log("An Error Occured: \n" + error));
+    handleOffEvent();
   })
   .on("error", console.error);
 }

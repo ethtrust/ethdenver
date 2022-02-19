@@ -80,7 +80,7 @@ function handleGetPoEPortConfig(getPoEPortConfigResponse) {
   if (checkForRedirect(getPoEPortConfigResponse.data)) {
     console.log("Handling Redirect - Session Cookie Cleared");
     apiState.sessionCookie = "";
-    Promise.reject(new Error("LoginRedirect"));
+    return Promise.reject(new Error("LoginRedirect"));
   } else {
     let portStatusResp = retrievePoEPortState(getPoEPortConfigResponse.data);
     apiState.hash = portStatusResp.hash;
@@ -177,8 +177,8 @@ poeAPI.get("/on", function (req, res) {
       // Logout is TBD - There's weidness there.
       // .then(postLogout())
       .catch((error) => {
-        console.log(error.message);
         if(error.message == "LoginRedirect") {
+          console.log("Redirect Handled");
           res.sendStatus(205);
         } else if (error.code === "ECONNRESET") {
           console.log("Handle Connection Reset");
@@ -189,6 +189,7 @@ poeAPI.get("/on", function (req, res) {
         }
       });
   } else {
+    apiState.sessionCookie = apiState.sessionCookie.slice(0,apiState.sessionCookie.length-1);
     console.log("Session Cookie Stored");
     getPoEPortConfig()
       .then((getPoEPortConfigResp) =>
