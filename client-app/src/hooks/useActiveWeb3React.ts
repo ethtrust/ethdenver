@@ -82,7 +82,6 @@ export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> &
       }
     } catch (error) {
       console.log(error);
-      console.log("Error ", error);
     }
   };
   const disconnect = async () => {

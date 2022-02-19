@@ -65,13 +65,13 @@ function MyApp({
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
 
-      <BlockchainWrapper>
-        <SpinnerProvider>
+      <SpinnerProvider>
+        <BlockchainWrapper>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </SpinnerProvider>
-      </BlockchainWrapper>
+        </BlockchainWrapper>
+      </SpinnerProvider>
     </Fragment>
   );
 }

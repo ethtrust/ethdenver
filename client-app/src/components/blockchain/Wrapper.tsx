@@ -4,6 +4,7 @@ import Web3Modal from "web3modal";
 import { Web3ReactProvider } from "@web3-react/core";
 import dynamic from "next/dynamic";
 
+import Modal from "../Modal";
 import Web3ReactManager from "./Web3ReactManager";
 import getLibrary from "../../functions/getLibrary";
 
@@ -93,6 +94,22 @@ export const BlockchainWrapper = ({ children }: Props) => {
   useEffect(() => {
     checkIsWalletConnected();
   }, [checkIsWalletConnected]);
+
+  if (typeof window !== "undefined" && !window.ethereum) {
+    return (
+      <div className="flex justify-center items-center mx-auto">
+        <Modal
+          title={`If you're seeing this message, there is an error It might be one of two different things.`}
+        >
+          <h1 className="text-md mt-8">
+            You must have MetaMask installed to use our app. If you do have{" "}
+            <a href="https://metamask.io">MetaMask</a> installed, try opening
+            the app in your MetaMask browser.
+          </h1>
+        </Modal>
+      </div>
+    );
+  }
 
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
