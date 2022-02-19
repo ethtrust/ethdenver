@@ -12,7 +12,7 @@ interface CustomProps {
   disconnect: () => Promise<void>;
 }
 
-const supportedChainId = process.env.NEXT_PUBLIC_CHAIN_ID;
+const supportedChainId = process.env.NEXT_PUBLIC_CHAIN_ID || "421611";
 
 export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> &
   CustomProps {
@@ -73,7 +73,9 @@ export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> &
       await context.activate(injected);
 
       if (
-        (provider && provider.network.chainId !== supportedChainId) ||
+        (provider &&
+          provider.network &&
+          provider.network.chainId !== parseInt(supportedChainId)) ||
         (context.error && context.error.name === "UnsupportedChainIdError")
       ) {
         await switchNetwork(provider);
