@@ -38,9 +38,13 @@ HandleUnlockOptions) => {
 
     let resp;
     if (isOn) {
-      resp = await contract.toggleOff();
+      resp = await contract.toggleOff({
+        // gasPrice: 500000,
+      });
     } else {
-      resp = await contract.toggleOn();
+      resp = await contract.toggleOn({
+        // gasPrice: 500000,
+      });
     }
   } catch (e) {
     // Rejected transaction

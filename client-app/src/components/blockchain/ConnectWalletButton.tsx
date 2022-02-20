@@ -67,7 +67,10 @@ export const ConnectWalletButton = (props: any) => {
         <ConnectOrOpen
           onClick={() => connectWallet(true)}
           className="px-4 py-2 font-semibold transition border-2 rounded-full shadow-lg hover:border-primary hover:text-primary hover:shadow-primary/30 border-primary/80 text-primary/90 shadow-primary/10"
-        />
+        >
+          {" "}
+          Connect wallet{" "}
+        </ConnectOrOpen>
       )}
     </div>
   );
