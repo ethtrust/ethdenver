@@ -10,7 +10,16 @@ const compileOutputJson = JSON.parse(
 );
 
 const web3ProviderURL = process.env.WEB3_PROVIDER_URL || listenerConfig.web3ProviderURL;
-const web3 = new Web3(web3ProviderURL);
+const web3Options = {
+  // Enable Auto Reconnection
+  reconnect: {
+    auto: true,
+    delay: 5000,
+    maxAttempts: 5,
+    onTimeout: false
+  }
+};
+const web3Socket = new Web3.providers.WebsocketProvider(web3ProviderURL, web3Options);
 
 const poeAPIURL = process.env.POE_API_URL || listenerConfig.poeAPIURL;
 const poeAPIPort = process.env.POE_API_PORT || listenerConfig.poeAPIPort;
@@ -21,10 +30,10 @@ const contractDetails = compileOutputJson[chainIdCfg][0]["contracts"][contractNa
 const contractAddress = contractDetails.address;
 const contractABI = contractDetails.abi;
 
-const lightEmUpContract = new web3.eth.Contract(contractABI, contractAddress);
+const lightEmUpContract = new web3Socket.eth.Contract(contractABI, contractAddress);
 
 console.log("Connecting to " + web3ProviderURL);
-web3.eth.net
+web3Socket.eth.net
   .getId()
   .then((chainId) => {
     if (chainId === parseInt(chainIdCfg)) {
@@ -41,18 +50,18 @@ web3.eth.net
   });
 
 function signTx(contractMethodName) {
-  console.log(web3.utils.sha3(contractMethodName).slice(0,10));
-  return web3.eth.accounts.signTransaction({
+  console.log(web3Socket.utils.sha3(contractMethodName).slice(0,10));
+  return web3Socket.eth.accounts.signTransaction({
     to: contractAddress,
     gas: 2000000,
-    data: web3.utils.sha3(contractMethodName).slice(0,10)
+    data: web3Socket.utils.sha3(contractMethodName).slice(0,10)
   }, process.env.PRIVATE_KEY)
 }
 
 async function sendTx(contractMethodName) {
   const txOutput = await signTx(contractMethodName);
   console.log(txOutput);
-  return await web3.eth.sendSignedTransaction(txOutput.rawTransaction);
+  return await web3Socket.eth.sendSignedTransaction(txOutput.rawTransaction);
 }
 
 function handleOnEvent() {
