@@ -19,7 +19,7 @@ const web3Options = {
     onTimeout: false
   }
 };
-const web3Socket = new Web3.providers.WebsocketProvider(web3ProviderURL, web3Options);
+const web3Socket = new Web3(new Web3.providers.WebsocketProvider(web3ProviderURL, web3Options));
 
 const poeAPIURL = process.env.POE_API_URL || listenerConfig.poeAPIURL;
 const poeAPIPort = process.env.POE_API_PORT || listenerConfig.poeAPIPort;
